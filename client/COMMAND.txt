@@ -1,0 +1,5 @@
+//installer ce qui vas bien
+npm i
+
+//lancer le serveur web du front:
+npx vite
