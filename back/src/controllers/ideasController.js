@@ -1,21 +1,48 @@
-const { 
+import { 
   ideas, 
   getNextId, 
   getIdeasWithDetails, 
-  getIdeaById: getIdeaFromData,
+  getIdeaById as getIdeaFromData,
   users,
   categories 
-} = require('../models/data');
+} from '../models/data.js';
+import Joi from 'joi';
+
+// Schémas de validation
+const ideaSchema = Joi.object({
+  title: Joi.string().min(3).max(100).required(),
+  description: Joi.string().min(10).max(500).required(),
+  categoryId: Joi.number().integer().positive().optional(),
+  userId: Joi.number().integer().positive().required()
+});
+
+const updateIdeaSchema = Joi.object({
+  title: Joi.string().min(3).max(100).optional(),
+  description: Joi.string().min(10).max(500).optional(),
+  categoryId: Joi.number().integer().positive().optional(),
+  status: Joi.string().valid('pending', 'approved', 'rejected').optional()
+});
 
 // Récupérer toutes les idées avec leurs détails complets
 const getAllIdeas = (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    
     const ideasWithDetails = getIdeasWithDetails();
+    const paginatedIdeas = ideasWithDetails.slice(startIndex, endIndex);
     
     res.json({
       success: true,
-      data: ideasWithDetails,
-      total: ideasWithDetails.length
+      data: paginatedIdeas,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(ideasWithDetails.length / limit),
+        totalItems: ideasWithDetails.length,
+        itemsPerPage: limit
+      }
     });
   } catch (error) {
     res.status(500).json({
@@ -53,15 +80,17 @@ const getIdeaById = (req, res) => {
 // Créer une nouvelle idée
 const createIdea = (req, res) => {
   try {
-    const { title, description, categoryId, userId } = req.body;
-    
-    // Validation basique
-    if (!title || !description || !userId) {
+    // Validation avec Joi
+    const { error, value } = ideaSchema.validate(req.body);
+    if (error) {
       return res.status(400).json({
         success: false,
-        error: 'Title, description et userId sont requis'
+        error: 'Données invalides',
+        details: error.details.map(d => d.message)
       });
     }
+    
+    const { title, description, categoryId, userId } = value;
     
     // Vérifier que l'utilisateur existe (pour l'instant, utiliser userId=1 par défaut)
     const user = users.find(u => u.id === userId) || users[0];
@@ -113,7 +142,18 @@ const createIdea = (req, res) => {
 const updateIdea = (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, categoryId, status } = req.body;
+    
+    // Validation avec Joi
+    const { error, value } = updateIdeaSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: 'Données invalides',
+        details: error.details.map(d => d.message)
+      });
+    }
+    
+    const { title, description, categoryId, status } = value;
     
     const ideaIndex = ideas.findIndex(i => i.id === parseInt(id));
     if (ideaIndex === -1) {
@@ -172,7 +212,7 @@ const deleteIdea = (req, res) => {
   }
 };
 
-module.exports = {
+export {
   getAllIdeas,
   getIdeaById,
   createIdea,

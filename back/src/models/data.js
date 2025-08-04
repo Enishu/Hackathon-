@@ -64,50 +64,50 @@ let comments = [
 ];
 
 // Fonctions utilitaires pour générer des IDs
-function getNextId(array) {
+const getNextId = (array) => {
   return array.length > 0 ? Math.max(...array.map(item => item.id)) + 1 : 1;
-}
+};
 
-module.exports = {
-  // Data arrays
+// Helper functions for relationships
+const getIdeasWithDetails = () => {
+  return ideas.map(idea => ({
+    ...idea,
+    user: users.find(u => u.id === idea.userId),
+    category: categories.find(c => c.id === idea.categoryId),
+    likesCount: likes.filter(l => l.ideaId === idea.id).length,
+    commentsCount: comments.filter(c => c.ideaId === idea.id).length,
+    comments: comments.filter(c => c.ideaId === idea.id).map(comment => ({
+      ...comment,
+      user: users.find(u => u.id === comment.userId)
+    }))
+  }));
+};
+
+const getIdeaById = (id) => {
+  const idea = ideas.find(i => i.id === parseInt(id));
+  if (!idea) return null;
+  
+  return {
+    ...idea,
+    user: users.find(u => u.id === idea.userId),
+    category: categories.find(c => c.id === idea.categoryId),
+    likesCount: likes.filter(l => l.ideaId === idea.id).length,
+    commentsCount: comments.filter(c => c.ideaId === idea.id).length,
+    comments: comments.filter(c => c.ideaId === idea.id).map(comment => ({
+      ...comment,
+      user: users.find(u => u.id === comment.userId)
+    }))
+  };
+};
+
+// Export ES modules
+export {
   users,
   categories,
   ideas,
   likes,
   comments,
-  
-  // Utility functions
   getNextId,
-  
-  // Helper functions for relationships
-  getIdeasWithDetails: () => {
-    return ideas.map(idea => ({
-      ...idea,
-      user: users.find(u => u.id === idea.userId),
-      category: categories.find(c => c.id === idea.categoryId),
-      likesCount: likes.filter(l => l.ideaId === idea.id).length,
-      commentsCount: comments.filter(c => c.ideaId === idea.id).length,
-      comments: comments.filter(c => c.ideaId === idea.id).map(comment => ({
-        ...comment,
-        user: users.find(u => u.id === comment.userId)
-      }))
-    }));
-  },
-  
-  getIdeaById: (id) => {
-    const idea = ideas.find(i => i.id === parseInt(id));
-    if (!idea) return null;
-    
-    return {
-      ...idea,
-      user: users.find(u => u.id === idea.userId),
-      category: categories.find(c => c.id === idea.categoryId),
-      likesCount: likes.filter(l => l.ideaId === idea.id).length,
-      commentsCount: comments.filter(c => c.ideaId === idea.id).length,
-      comments: comments.filter(c => c.ideaId === idea.id).map(comment => ({
-        ...comment,
-        user: users.find(u => u.id === comment.userId)
-      }))
-    };
-  }
+  getIdeasWithDetails,
+  getIdeaById
 };

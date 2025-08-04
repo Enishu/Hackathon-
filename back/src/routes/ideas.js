@@ -1,14 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const { 
+import express from 'express';
+import { 
   getAllIdeas, 
   getIdeaById, 
   createIdea, 
   updateIdea, 
   deleteIdea 
-} = require('../controllers/ideasController');
+} from '../controllers/ideasController.js';
 
-// GET /api/ideas - Récupérer toutes les idées
+const router = express.Router();
+
+// GET /api/ideas - Récupérer toutes les idées (avec pagination)
 router.get('/', getAllIdeas);
 
 // GET /api/ideas/:id - Récupérer une idée par son ID
@@ -23,4 +24,4 @@ router.put('/:id', updateIdea);
 // DELETE /api/ideas/:id - Supprimer une idée (pour plus tard)
 router.delete('/:id', deleteIdea);
 
-module.exports = router;
+export default router;
