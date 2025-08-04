@@ -15,11 +15,7 @@ app.use('/api/categories', require('./src/routes/categories'));
 
 // Route de test
 app.get('/api/test', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    message: 'API Boîte à idées inclusives', 
-    timestamp: new Date().toISOString() 
-  });
+  res.json({ ok: true });
 });
 
 // 404
