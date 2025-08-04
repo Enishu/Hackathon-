@@ -1,11 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const { getAllIdeas, createIdea } = require('../controllers/ideasController');
+const { 
+  getAllIdeas, 
+  getIdeaById, 
+  createIdea, 
+  updateIdea, 
+  deleteIdea 
+} = require('../controllers/ideasController');
 
-// GET Récupérer toutes les idées
+// GET /api/ideas - Récupérer toutes les idées
 router.get('/', getAllIdeas);
 
-// POST Créer une nouvelle idée
+// GET /api/ideas/:id - Récupérer une idée par son ID
+router.get('/:id', getIdeaById);
+
+// POST /api/ideas - Créer une nouvelle idée
 router.post('/', createIdea);
+
+// PUT /api/ideas/:id - Mettre à jour une idée (pour plus tard)
+router.put('/:id', updateIdea);
+
+// DELETE /api/ideas/:id - Supprimer une idée (pour plus tard)
+router.delete('/:id', deleteIdea);
 
 module.exports = router;
