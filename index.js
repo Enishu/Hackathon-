@@ -1,31 +1,26 @@
-const express = require('express');
-const cors = require('cors');
+import env from "./src/config/env.js";
+import express from "express";
+import applySecurityMiddlewares from "./src/middlewares/security.js";
+import authRoutes from "./src/routes/authRoutes.js";
+import { deleteUnverifiedUsers } from "./src/middlewares/scheduledTasks.js";
 
+// Création d'une instance Express
 const app = express();
-const PORT = 3000;
 
-// Middleware
-app.use(cors());
-app.use(express.json()); // Parse JSON dans les requêtes
-app.use(express.urlencoded({ extended: true })); // Parse les formulaires
+// Tâches programmées
+deleteUnverifiedUsers.start();
 
-// Routes principales
-app.use('/api/ideas', require('./src/routes/ideas'));
-app.use('/api/categories', require('./src/routes/categories'));
+// Middlewares
+applySecurityMiddlewares(app, env.SERVER_HOST, env.SERVER_PORT);
+app.use(express.json());
 
-// Route de test
-app.get('/api/test', (req, res) => {
-  res.json({ ok: true });
+// Points d'entrée
+app.get("/", (req, res) => {
+    res.send("Bienvenue sur l'API de la boite à idées!");
 });
+app.use("/api/auth", authRoutes);
 
-// 404
-app.use('*', (req, res) => {
-  res.status(404).json({ error: 'Route non trouvée' });
+// Lancement du serveur
+app.listen(env.SERVER_PORT, () => {
+    console.log(`Serveur lancé sur http://${env.SERVER_HOST}:${env.SERVER_PORT}`);
 });
-
-app.listen(PORT, () => {
-  console.log(`Serveur lancé sur le port ${PORT}`);
-  console.log(`Test: http://localhost:${PORT}/api/test`);
-});
-
-module.exports = app;
