@@ -1,10 +1,10 @@
 import pool from "../config/database.js";
 
 export async function create(data) {
-    const { email, hashedPassword, emailTokenExpiresAt } = data;
+    const { avatar, email, hashedPassword, emailTokenExpiresAt } = data;
     const [result] = await pool.query(
-        "INSERT INTO users (email, hashed_password, email_token_expires_at) VALUES (?, ?, ?)",
-        [email, hashedPassword, emailTokenExpiresAt]
+        "INSERT INTO users (avatar, email, hashed_password, email_token_expires_at) VALUES (?, ?, ?, ?)",
+        [avatar, email, hashedPassword, emailTokenExpiresAt]
     );
     return result;
 }
@@ -34,10 +34,10 @@ export async function recordLastLogin(email) {
 }
 
 export async function update(data) {
-    const { id, email, hashedPassword, emailTokenExpiresAt } = data;
+    const { id, avatar, email, hashedPassword, emailTokenExpiresAt } = data;
     const [result] = await pool.query(
-        "UPDATE users SET email=?, hashed_password=?, email_token_expires_at=? WHERE id=?",
-        [email, hashedPassword, emailTokenExpiresAt, id]
+        "UPDATE users SET avatar=?, email=?, hashed_password=?, email_token_expires_at=? WHERE id=?",
+        [avatar, email, hashedPassword, emailTokenExpiresAt, id]
     );
     return result;
 }
