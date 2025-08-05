@@ -38,7 +38,9 @@ export default ({children}) => {
                             <Input id="username-1" name="username" />
                         </div>
                     </div>
-                    <DialogFooter>
+                    <DialogFooter className="flex justify-between">
+                        <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
+                        dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Créer un compte</Button>
                         <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
                         dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Se connecter</Button>
                     </DialogFooter>
