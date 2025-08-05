@@ -28,14 +28,78 @@ export default () => {
     }
 
     let posts = [
-        { id: 1, date: 3, text: "1Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque quos in quia praesentium. Ea voluptatibus soluta dolorem quos officiis. Et accusamus unde placeat non. Totam, sapiente praesentium! Adipisci, aliquid esse." },
-        { id: 2, date: 2, text: "2Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque quos in quia praesentium. Ea voluptatibus soluta dolorem quos officiis. Et accusamus unde placeat non. Totam, sapiente praesentium! Adipisci, aliquid esse." },
-        { id: 3, date: 1, text: "3Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque quos in quia praesentium. Ea voluptatibus soluta dolorem quos officiis. Et accusamus unde placeat non. Totam, sapiente praesentium! Adipisci, aliquid esse." },
-        { id: 4, date: 1, text: "3Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque quos in quia praesentium. Ea voluptatibus soluta dolorem quos officiis. Et accusamus unde placeat non. Totam, sapiente praesentium! Adipisci, aliquid esse." },
-        { id: 5, date: 1, text: "3Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque quos in quia praesentium. Ea voluptatibus soluta dolorem quos officiis. Et accusamus unde placeat non. Totam, sapiente praesentium! Adipisci, aliquid esse." },
-        { id: 6, date: 1, text: "3Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque quos in quia praesentium. Ea voluptatibus soluta dolorem quos officiis. Et accusamus unde placeat non. Totam, sapiente praesentium! Adipisci, aliquid esse." },
-        { id: 7, date: 1, text: "3Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque quos in quia praesentium. Ea voluptatibus soluta dolorem quos officiis. Et accusamus unde placeat non. Totam, sapiente praesentium! Adipisci, aliquid esse." },
-        { id: 8, date: 1, text: "3Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque quos in quia praesentium. Ea voluptatibus soluta dolorem quos officiis. Et accusamus unde placeat non. Totam, sapiente praesentium! Adipisci, aliquid esse." },
+        {
+            "id": 8,
+            "date": 1646179200,
+            "category": "Autres",
+            "text": "Créer un comité local composé de citoyens en situation de handicap pour conseiller la mairie sur les décisions d’aménagement.",
+            "likeNumber": 11,
+            "commentNumber": 1,
+            "author": "Thomas R."
+        },
+        {
+            "id": 2,
+            "date": 1648771200,
+            "category": "Éducation",
+            "text": "Adapter les infrastructures et le matériel pédagogique dans les centres de formation pour permettre l'accès à tous, sans discrimination physique.",
+            "likeNumber": 9,
+            "commentNumber": 2,
+            "author": "Jean P."
+        },
+        {
+            "id": 1,
+            "date": 1651363200,
+            "category": "Éducation",
+            "text": "Intégrer des ateliers sur le handicap et l’accessibilité dès l’école primaire pour développer l’empathie et la compréhension dès le plus jeune âge.",
+            "likeNumber": 12,
+            "commentNumber": 3,
+            "author": "Claire D."
+        },
+        {
+            "id": 3,
+            "date": 1646179200,
+            "category": "Mobilité",
+            "text": "Rendre tous les bus, trams et métros accessibles avec des rampes, annonces vocales et espaces réservés.",
+            "likeNumber": 20,
+            "commentNumber": 5,
+            "author": "Nora K."
+        },
+        {
+            "id": 4,
+            "date": 1646179200,
+            "category": "Mobilité",
+            "text": "Subventionner une flotte de véhicules adaptés disponibles à la demande, avec réservation simplifiée via une appli accessible.",
+            "likeNumber": 14,
+            "commentNumber": 4,
+            "author": "Luc M."
+        },
+        {
+            "id": 5,
+            "date": 1646179200,
+            "category": "Santé",
+            "text": "Développer les services médicaux à domicile pour les personnes à mobilité réduite avec un meilleur accès aux kinés, infirmiers et téléconsultation.",
+            "likeNumber": 17,
+            "commentNumber": 3,
+            "author": "Fatima B."
+        },
+        {
+            "id": 6,
+            "date": 1646179200,
+            "category": "Santé",
+            "text": "Obliger l’adaptation des cabinets de santé (rampes, portes larges, ascenseurs) pour garantir un accès physique à tous les professionnels de santé.",
+            "likeNumber": 13,
+            "commentNumber": 2,
+            "author": "Yves T."
+        },
+        {
+            "id": 7,
+            "date": 1646179200,
+            "category": "Urbanisme",
+            "text": "Refaire les trottoirs avec des matériaux antidérapants, des pentes douces, et des bandes podotactiles, tout en supprimant les obstacles inutiles.",
+            "likeNumber": 15,
+            "commentNumber": 3,
+            "author": "Lina S."
+        }
     ]
     return (<>
         {/* <div className="py-10 h-full bg-gradient-to-bl from-purple-700 to-blue-700 text-blue-50 dark: bg-slate-900"> */}
@@ -55,7 +119,7 @@ export default () => {
                 <div className="fixed flex justify-center gap-3 z-10
                                 pt-5 pb-2 right-0 top-0 w-full
                                 lg:pt-0 lg:w-auto lg:top-8 lg:right-8 lg:flex-col">
-                    <div className="backdrop-blur-sm absolute w-full h-full inset-0 -z-10"></div> 
+                    <div className="backdrop-blur-sm absolute w-full h-full inset-0 -z-10"></div>
                     <div className="grid grid-cols-1 justify-items-center gap-1">
                         <PopUpLogin>
                             <div className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full shadow-lg
@@ -69,7 +133,7 @@ export default () => {
                     <div className="grid grid-cols-1 justify-items-center gap-1">
                         <div className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full shadow-lg
                         dark:bg-slate-700 dark:hover:bg-slate-600"
-                        onClick={toggleDarkMode} >
+                            onClick={toggleDarkMode} >
                             <img className="object-contain text-red-500" src="./src/icons/sun.svg" alt="" />
                         </div>
                         <Badge className="bg-stone-100 shadow-lg text-stone-700
@@ -97,7 +161,7 @@ export default () => {
                     <div className="grid md:grid-cols-1 gap-3">
                         <div className="flex justify-center gap-3 flex-wrap">
                             <Tag text="Éducation" img="./src/icons/book.svg"></Tag>
-                            <Tag text="Mobilité" img="./src/icons/car.svg" className="ring-stone-300 ring-5 dark:ring-slate-500"></Tag>
+                            <Tag text="Mobilité" img="./src/icons/car.svg" className="ring-stone-300 ring-4 dark:ring-slate-500"></Tag>
                             <Tag text="Santé" img="./src/icons/heart.svg"></Tag>
                             <Tag text="Urbanisme" img="./src/icons/building.svg"></Tag>
                             <Tag text="Autres" img="./src/icons/compass.svg"></Tag>
@@ -105,7 +169,7 @@ export default () => {
                         <div className="flex justify-center gap-3 flex-wrap">
                             <Tag text="Cognitif" img="./src/icons/cog.svg"></Tag>
                             <Tag text="Visuel" img="./src/icons/eye.svg"></Tag>
-                            <Tag text="Auditif" img="./src/icons/headphones.svg" className="ring-stone-300 ring-5 dark:ring-slate-500"></Tag>
+                            <Tag text="Auditif" img="./src/icons/headphones.svg" className="ring-stone-300 ring-4 dark:ring-slate-500"></Tag>
                             <Tag text="Moteur" img="./src/icons/basketball.svg"></Tag>
                         </div>
                     </div>
@@ -115,7 +179,7 @@ export default () => {
                     <div className="grid grid-cols-1 gap-12 px-5 sm:px-32 mt-16">
                         {
                             posts.sort((a, b) => a.date - b.date)
-                                .map(item => <Card key={item.id} postId={item.id} text={item.text}></Card>)
+                                .map(item => <Card key={item.id} postId={item.id} likeNumber={item.likeNumber} commentNumber={item.commentNumber} text={item.text}></Card>)
                         }
                     </div>
                     {/* 

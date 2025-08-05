@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export default ({children}) => {
+export default ({ children }) => {
     return <>
         <Dialog>
             <form>
@@ -34,15 +34,20 @@ export default ({children}) => {
                             <Input id="name-1" name="name" />
                         </div>
                         <div className="grid gap-3">
-                            <Label htmlFor="username-1">Mot de passe</Label>
+                            <Label htmlFor="username-1" className="flex justify-between">
+                                <span>Mot de passe</span>
+                                <a href="#" className="text-blue-500">Mot de passe oublier</a>
+                            </Label>
                             <Input id="username-1" name="username" />
                         </div>
                     </div>
-                    <DialogFooter className="flex justify-between">
-                        <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
+                    <DialogFooter>
+                        <div className="w-full flex justify-between">
+                            <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
                         dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Créer un compte</Button>
-                        <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
+                            <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
                         dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Se connecter</Button>
+                        </div>
                     </DialogFooter>
                 </DialogContent>
             </form>

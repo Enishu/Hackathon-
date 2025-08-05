@@ -16,7 +16,8 @@ export default () => {
                     <SelectValue placeholder="Categories" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="1">Éducation <Checkbox /></SelectItem>
+                    {/* <SelectItem value="1">Éducation <Checkbox /></SelectItem> */}
+                    <SelectItem value="1">Éducation</SelectItem>
                     <SelectItem value="2">Mobilité</SelectItem>
                     <SelectItem value="3">Santé</SelectItem>
                     <SelectItem value="4">Urbanisme</SelectItem>
