@@ -21,7 +21,8 @@ export default ({children, postId}) => {
                     {children}
                 </DialogTrigger>
                 <DialogOverlay className="bg-transparent backdrop-blur-sm" />
-                <DialogContent className="sm:max-w-3xl text-indigo-50 bg-slate-800">
+                <DialogContent className="sm:max-w-3xl bg-amber-50 shadow-lg
+                dark:bg-slate-800">
                     <DialogHeader>
                         <DialogTitle>Commentaires du post: {postId}</DialogTitle>
                         <DialogDescription>

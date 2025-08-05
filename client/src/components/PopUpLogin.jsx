@@ -11,21 +11,17 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default () => {
+export default ({children}) => {
     return <>
         <Dialog>
             <form>
                 <DialogTrigger asChild>
-                    <Avatar className="fixed cursor-pointer size-16 top-2 md:top-10 right-10 ring-indigo-800 ring-4 hover:scale-110 transition shadow-lg z-10">
-                        {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-                        <AvatarImage src="./src/icons/man.svg" className="-bottom-2 absolute" />
-                        <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
+                    {children}
                 </DialogTrigger>
                 <DialogOverlay className="bg-transparent backdrop-blur-sm" />
-                <DialogContent className="sm:max-w-[425px] text-indigo-50 bg-slate-800">
+                <DialogContent className="sm:max-w-[425px] bg-amber-50 shadow-lg
+                dark:bg-slate-800">
                     <DialogHeader>
                         <DialogTitle>Connection</DialogTitle>
                         <DialogDescription>
@@ -43,7 +39,8 @@ export default () => {
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit" className="cursor-pointer bg-indigo-800 hover:bg-indigo-900 active:bg-indigo-950">Se connecter</Button>
+                        <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
+                        dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Se connecter</Button>
                     </DialogFooter>
                 </DialogContent>
             </form>

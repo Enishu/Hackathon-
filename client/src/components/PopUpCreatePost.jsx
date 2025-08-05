@@ -21,7 +21,8 @@ export default ({children}) => {
                     {children}
                 </DialogTrigger>
                 <DialogOverlay className="bg-transparent backdrop-blur-sm" />
-                <DialogContent className="sm:max-w-[425px] text-indigo-50 bg-slate-800">
+                <DialogContent className="sm:max-w-[425px] bg-amber-50 shadow-lg
+                dark:bg-slate-800">
                     <DialogHeader>
                         <DialogTitle>Proposé une idée</DialogTitle>
                         <DialogDescription>
@@ -35,7 +36,8 @@ export default ({children}) => {
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit" className="cursor-pointer bg-indigo-800 hover:bg-indigo-900 active:bg-indigo-950">Publier</Button>
+                        <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
+                        dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Publier</Button>
                     </DialogFooter>
                 </DialogContent>
             </form>
