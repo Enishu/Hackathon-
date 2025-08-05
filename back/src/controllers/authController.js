@@ -1,5 +1,5 @@
 import env from "../config/env.js";
-import * as User from "../models/User.js";
+import * as User from "../models/User.cjs";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/emailSender.js";
