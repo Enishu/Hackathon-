@@ -1,58 +1,26 @@
-import DOMPurify from 'dompurify';
-import { JSDOM } from 'jsdom';
+import env from "../config/env.js";
+import cors from "cors";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 
-// Configuration de DOMPurify pour Node.js
-const window = new JSDOM('').window;
-const purify = DOMPurify(window);
+const applySecurityMiddlewares = (app) => {
+    // Cors
+    const corsOptions = {
+        origin: env.CORS_ORIGIN, // adresse du frontend
+        credentials: true,
+    };
+    app.use(cors(corsOptions));
 
-// Middleware de sécurité pour nettoyer les inputs
-export const securityMiddleware = (req, res, next) => {
-  // Nettoyage des données JSON
-  if (req.body && typeof req.body === 'object') {
-    req.body = sanitizeObject(req.body);
-  }
-  
-  // Nettoyage des query parameters
-  if (req.query && typeof req.query === 'object') {
-    req.query = sanitizeObject(req.query);
-  }
-  
-  next();
+    // Rate limit (max 100 requêtes toutes les 15 minutes)
+    const limiter = rateLimit({
+        windowMs: 15 * 60 * 1000, // 15 minutes
+        max: 100, // limite chaque IP à 100 requêtes
+        message: "Trop de requêtes, réessayez plus tard.",
+    });
+    app.use(limiter);
+
+    // Helmet
+    app.use(helmet());
 };
 
-// Fonction récursive pour nettoyer un objet
-const sanitizeObject = (obj) => {
-  if (typeof obj === 'string') {
-    return purify.sanitize(obj);
-  }
-  
-  if (Array.isArray(obj)) {
-    return obj.map(item => sanitizeObject(item));
-  }
-  
-  if (obj && typeof obj === 'object') {
-    const cleaned = {};
-    for (const [key, value] of Object.entries(obj)) {
-      cleaned[key] = sanitizeObject(value);
-    }
-    return cleaned;
-  }
-  
-  return obj;
-};
-
-// Middleware de validation des headers
-export const validateHeaders = (req, res, next) => {
-  const contentType = req.get('Content-Type');
-  
-  if (req.method === 'POST' || req.method === 'PUT') {
-    if (!contentType || !contentType.includes('application/json')) {
-      return res.status(400).json({
-        success: false,
-        error: 'Content-Type doit être application/json'
-      });
-    }
-  }
-  
-  next();
-};
+export default applySecurityMiddlewares;
