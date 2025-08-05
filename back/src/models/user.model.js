@@ -22,7 +22,6 @@ const User = {
   async update(id, fields) {
     const keys = Object.keys(fields);
     const values = Object.values(fields);
-
     const updates = keys.map(k => `${k} = ?`).join(', ');
     const [result] = await db.query(
       `UPDATE users SET ${updates} WHERE id_user = ?`,
