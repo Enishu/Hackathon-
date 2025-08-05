@@ -11,34 +11,31 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
-export default () => {
+export default ({children}) => {
     return <>
         <Dialog>
             <form>
                 <DialogTrigger asChild>
-                    <Button variant="outline">Profile</Button>
+                    {children}
                 </DialogTrigger>
                 <DialogOverlay className="bg-transparent backdrop-blur-sm" />
-                <DialogContent className="sm:max-w-[425px]">
+                <DialogContent className="sm:max-w-[425px] text-indigo-50 bg-slate-800">
                     <DialogHeader>
-                        <DialogTitle>Connection</DialogTitle>
+                        <DialogTitle>Proposé une idée</DialogTitle>
                         <DialogDescription>
 
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4">
                         <div className="grid gap-3">
-                            <Label htmlFor="name-1">Mail</Label>
+                            <Label htmlFor="name-1">Text</Label>
                             <Input id="name-1" name="name" />
-                        </div>
-                        <div className="grid gap-3">
-                            <Label htmlFor="username-1">Mot de passe</Label>
-                            <Input id="username-1" name="username" />
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button type="submit">Se connecter</Button>
+                        <Button type="submit" className="cursor-pointer bg-indigo-800 hover:bg-indigo-900 active:bg-indigo-950">Publier</Button>
                     </DialogFooter>
                 </DialogContent>
             </form>
