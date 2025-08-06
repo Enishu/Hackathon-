@@ -6,7 +6,7 @@ import { sendEmail } from "../utils/emailSender.js";
 
 export async function register(req, res) {
     try {
-        const { avatar, email, password, passwordConfirm } = req.body;
+        const { username, email, password, passwordConfirm } = req.body;
 
         // Vérifications de saisie
         if (!email || !password || !passwordConfirm)
@@ -38,14 +38,19 @@ export async function register(req, res) {
         if (user && !user.is_verified)
             await User.update({
                 id: user.id,
-                avatar,
+                username,
                 email,
                 hashedPassword,
                 emailTokenExpiresAt,
             });
         else {
             // Sinon, création de l'utilisateur
-            await User.create({ avatar, email, hashedPassword, emailTokenExpiresAt });
+            await User.create({
+                username,
+                email,
+                hashedPassword,
+                emailTokenExpiresAt,
+            });
         }
 
         // Création de l'email de validation
@@ -121,6 +126,60 @@ export async function login(req, res) {
         await User.recordLastLogin(email);
 
         res.status(200).json({ message: `Connexion réussie.`, token: token });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: `Le serveur a rencontré une erreur.` });
+    }
+}
+
+export async function forgottenPassword(req, res) {
+    try {
+        const { email } = req.body;
+
+        // Vérifications de la saisie
+        if (!email)
+            return res.status(400).json({ error: `L'email est requis.` });
+
+        // Vérification de l'email
+        const user = await User.findByEmail(email);
+        if (!user?.is_verified) {
+            return res.status(404).json({
+                error: "L'email n'existe pas ou n'a pas été confirmé.",
+            });
+        }
+
+        // Création d'un token pour la réinitialisation du mot de passse
+        const token = jwt.sign({ email }, env.JWT_SECRET, {
+            expiresIn: env.JWT_EMAIL_VERIFICATION_EXPIRES_IN,
+        });
+        const emailTokenExpiresAt = new Date(jwt.decode(token).exp * 1000);
+
+        // Actualisation de la base avec les nouvelles données
+        await User.update({
+            id: user.id,
+            username: user.username,
+            email,
+            hashedPassword: user.hashedPassword,
+            emailTokenExpiresAt,
+        });
+
+        // Création de l'email de validation
+        const url = `http://${env.SERVER_HOST}:${env.SERVER_PORT}/api/auth/reset-password/${token}`;
+
+        sendEmail({
+            to: email,
+            subject: `Votre demande de reinitialisation de mot de passe`,
+            html: `
+            <h1>Vous y êtes presque !</h1>
+            <p>Vous venez de soumettre une demande de réinitialisation de votre mot de passe.</p>
+            <p>Nous vous invitons à cliquer sur le bouton ci-dessous afin d’en choisir un nouveau.</p>
+            <p><a href="${url}">Reinitialiser mon mot de passe</a></p>
+            <p><em>Ce lien est valable pendant 1h</em></p>
+            `,
+        });
+        res.status(201).json({
+            message: "Un email de réinitialisation a été envoyé.",
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: `Le serveur a rencontré une erreur.` });
