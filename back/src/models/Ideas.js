@@ -34,7 +34,9 @@ export async function getAll(data) {
 }
 
 export async function findById(id) {
-    const [rows] = await pool.query("SELECT * FROM ideas WHERE id=?", [id]);
+    const [rows] = await pool.query("SELECT * FROM ideas WHERE id=?", [
+        id,
+    ]);
     return rows.length ? rows[0] : null;
 }
 
