@@ -1,221 +1,152 @@
-import { 
-  ideas, 
-  getNextId, 
-  getIdeasWithDetails, 
-  getIdeaById as getIdeaFromData,
-  users,
-  categories 
-} from '../models/data.js';
-import Joi from 'joi';
-
-// Schémas de validation
-const ideaSchema = Joi.object({
-  title: Joi.string().min(3).max(100).required(),
-  description: Joi.string().min(10).max(500).required(),
-  categoryId: Joi.number().integer().positive().optional(),
-  userId: Joi.number().integer().positive().required()
-});
-
-const updateIdeaSchema = Joi.object({
-  title: Joi.string().min(3).max(100).optional(),
-  description: Joi.string().min(10).max(500).optional(),
-  categoryId: Joi.number().integer().positive().optional(),
-  status: Joi.string().valid('pending', 'approved', 'rejected').optional()
-});
-
-// Récupérer toutes les idées avec leurs détails complets
-const getAllIdeas = (req, res) => {
+// Logique de gestion des idées 
+import db from '../db/ideasDB.js';
+// Récupérer toutes les idées
+export const getAllIdeas = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
+    // TODO: Implémenter la récupération des idées depuis la base de données
+    // const ideas = await IdeaModel.getAllIdeas();
     
-    const ideasWithDetails = getIdeasWithDetails();
-    const paginatedIdeas = ideasWithDetails.slice(startIndex, endIndex);
-    
-    res.json({
+    res.status(200).json({
       success: true,
-      data: paginatedIdeas,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(ideasWithDetails.length / limit),
-        totalItems: ideasWithDetails.length,
-        itemsPerPage: limit
-      }
+      message: 'Idées récupérées avec succès',
+      data: [] // TODO: remplacer par les vraies données
     });
   } catch (error) {
+    console.error('Erreur lors de la récupération des idées:', error);
     res.status(500).json({
       success: false,
-      error: 'Erreur lors de la récupération des idées'
+      message: 'Erreur serveur lors de la récupération des idées'
     });
   }
 };
 
-// Récupérer une idée par son ID
-const getIdeaById = (req, res) => {
+// Récupérer une idée par ID
+export const getIdeaById = async (req, res) => {
   try {
     const { id } = req.params;
-    const idea = getIdeaFromData(parseInt(id));
     
-    if (!idea) {
-      return res.status(404).json({
-        success: false,
-        error: 'Idée non trouvée'
-      });
-    }
+    // TODO: Implémenter la récupération d'une idée par ID
+    // const idea = await IdeaModel.getIdeaById(id);
     
-    res.json({
+    // TODO: Vérifier si l'idée existe
+    // if (!idea) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: 'Idée non trouvée'
+    //   });
+    // }
+    
+    res.status(200).json({
       success: true,
-      data: idea
+      message: 'Idée récupérée avec succès',
+      data: {} // TODO: remplacer par les vraies données
     });
   } catch (error) {
+    console.error('Erreur lors de la récupération de l\'idée:', error);
     res.status(500).json({
       success: false,
-      error: 'Erreur lors de la récupération de l\'idée'
+      message: 'Erreur serveur lors de la récupération de l\'idée'
     });
   }
 };
 
-// Créer une nouvelle idée
-const createIdea = (req, res) => {
+// Créer une nouvelle idée 
+export const createIdeas = async (req, res) => {
   try {
-    // Validation avec Joi
-    const { error, value } = ideaSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        error: 'Données invalides',
-        details: error.details.map(d => d.message)
-      });
-    }
+    const { title, description, categoryId, userId } = req.body;
     
-    const { title, description, categoryId, userId } = value;
+    // TODO: Validation des données
+    // if (!title || !description || !categoryId || !userId) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: 'Tous les champs sont requis'
+    //   });
+    // }
     
-    // Vérifier que l'utilisateur existe (pour l'instant, utiliser userId=1 par défaut)
-    const user = users.find(u => u.id === userId) || users[0];
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        error: 'Utilisateur non trouvé'
-      });
-    }
-    
-    // Vérifier que la catégorie existe
-    if (categoryId && !categories.find(c => c.id === categoryId)) {
-      return res.status(400).json({
-        success: false,
-        error: 'Catégorie non trouvée'
-      });
-    }
-    
-    const newIdea = {
-      id: getNextId(ideas),
-      title: title.trim(),
-      description: description.trim(),
-      userId: user.id,
-      categoryId: categoryId || null,
-      status: 'pending',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    
-    ideas.push(newIdea);
-    
-    // Retourner l'idée avec ses détails complets
-    const ideaWithDetails = getIdeaFromData(newIdea.id);
+    // TODO: Créer l'idée en base de données
+    // const newIdea = await IdeaModel.createIdea({
+    //   title,
+    //   description,
+    //   categoryId,
+    //   userId
+    // });
     
     res.status(201).json({
       success: true,
-      data: ideaWithDetails,
-      message: 'Idée créée avec succès'
+      message: 'Idée créée avec succès',
+      data: {} // TODO: remplacer par les vraies données
     });
   } catch (error) {
+    console.error('Erreur lors de la création de l\'idée:', error);
     res.status(500).json({
       success: false,
-      error: 'Erreur lors de la création de l\'idée'
+      message: 'Erreur serveur lors de la création de l\'idée'
     });
   }
 };
 
-// Mettre à jour une idée (pour plus tard, avec authentification)
-const updateIdea = (req, res) => {
+// Modifier une idée
+export const updateIdea = async (req, res) => {
   try {
     const { id } = req.params;
-    
-    // Validation avec Joi
-    const { error, value } = updateIdeaSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        error: 'Données invalides',
-        details: error.details.map(d => d.message)
-      });
-    }
-    
-    const { title, description, categoryId, status } = value;
-    
-    const ideaIndex = ideas.findIndex(i => i.id === parseInt(id));
-    if (ideaIndex === -1) {
-      return res.status(404).json({
-        success: false,
-        error: 'Idée non trouvée'
-      });
-    }
-    
-    // Mise à jour des champs fournis
-    if (title) ideas[ideaIndex].title = title.trim();
-    if (description) ideas[ideaIndex].description = description.trim();
-    if (categoryId) ideas[ideaIndex].categoryId = categoryId;
-    if (status) ideas[ideaIndex].status = status;
-    ideas[ideaIndex].updatedAt = new Date().toISOString();
-    
-    const updatedIdea = getIdeaFromData(parseInt(id));
-    
-    res.json({
+    const { title, description, categoryId } = req.body;
+
+    // TODO: Vérifier si l'idée existe
+    // const existingIdea = await IdeaModel.getIdeaById(id);
+    // if (!existingIdea) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: 'Idée non trouvée'
+    //   });
+    // }
+
+    // TODO: Mettre à jour l'idée en base de données
+    // const updatedIdea = await IdeaModel.updateIdea(id, {
+    //   title,
+    //   description,
+    //   categoryId
+    // });
+
+    res.status(200).json({
       success: true,
-      data: updatedIdea,
-      message: 'Idée mise à jour avec succès'
+      message: 'Idée modifiée avec succès',
+      data: {} // TODO: remplacer par les vraies données
     });
   } catch (error) {
+    console.error('Erreur lors de la modification de l\'idée:', error);
     res.status(500).json({
       success: false,
-      error: 'Erreur lors de la mise à jour de l\'idée'
+      message: 'Erreur serveur lors de la modification de l\'idée'
     });
   }
 };
 
-// Supprimer une idée (pour plus tard, avec authentification)
-const deleteIdea = (req, res) => {
+// Supprimer une idée
+export const deleteIdea = async (req, res) => {
   try {
     const { id } = req.params;
-    const ideaIndex = ideas.findIndex(i => i.id === parseInt(id));
     
-    if (ideaIndex === -1) {
-      return res.status(404).json({
-        success: false,
-        error: 'Idée non trouvée'
-      });
-    }
+    // TODO: Vérifier si l'idée existe
+    // const existingIdea = await IdeaModel.getIdeaById(id);
+    // if (!existingIdea) {
+    //   return res.status(404).json({
+    //     success: false,
+    //     message: 'Idée non trouvée'
+    //   });
+    // }
     
-    ideas.splice(ideaIndex, 1);
+    // TODO: Supprimer l'idée
+    // await IdeaModel.deleteIdea(id);
     
-    res.json({
+    res.status(200).json({
       success: true,
       message: 'Idée supprimée avec succès'
     });
   } catch (error) {
+    console.error('Erreur lors de la suppression de l\'idée:', error);
     res.status(500).json({
       success: false,
-      error: 'Erreur lors de la suppression de l\'idée'
+      message: 'Erreur serveur lors de la suppression de l\'idée'
     });
   }
-};
-
-export {
-  getAllIdeas,
-  getIdeaById,
-  createIdea,
-  updateIdea,
-  deleteIdea
 };
