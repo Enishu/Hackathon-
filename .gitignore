@@ -19,8 +19,6 @@ build/
 .DS_Store
 Thumbs.db
 nul
-client/node_modules
-client/package-lock.json
 
 # IDEs
 .vscode/
@@ -28,3 +26,8 @@ client/package-lock.json
 
 # Uploads
 uploads/
+
+#font
+client/node_modules
+client/package-lock.json
+client/.env

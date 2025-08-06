@@ -1,0 +1,91 @@
+/register
+> { "mail": "azerty", "password": "azerty", "username": "Jean Kevin" }
+< { "token": "azerty", "username": "Jean Kevin" }
+
+/auth
+> { "mail": "azerty", "password": "azerty" }
+< { "token": "azerty", "username": "Jean Kevin" }
+
+/forgotPassword
+> { "mail": "azerty" }
+< {
+  "mailSend": true|false,
+  ?"resendDelay": 300,
+  ?"mailExist": true|false
+}
+
+/changePassword
+> { "mailToken": "azerty", "newPassword": "azerty" }
+< { "token": "azerty" } // token de login
+
+/getPosts
+> {
+  ?"filters": ["azerty", "azerty"],
+  ?"range": [10, 20]
+}
+< [
+  {
+    "id": 1,
+    "date": 1646179200,
+    "category": "Autres",
+    "text": "Créer un comité local composé de citoyens en situation de handicap pour conseiller la mairie sur les décisions d’aménagement.",
+    "likeNumber": 11,
+    "commentNumber": 1,
+    "author": "Jean Kevin"
+  }
+]
+
+/addPost
+> {
+  "token": "azerty",
+  "text": "azerty",
+  "category": ["azerty", "azerty"]
+}
+< {
+  "id": 1,
+  "date": 1646179200,
+  "category": "Autres",
+  "text": "Créer un comité local composé de citoyens en situation de handicap pour conseiller la mairie sur les décisions d’aménagement.",
+  "likeNumber": 0,
+  "commentNumber": 0,
+  "author": "Jean Kevin"
+}
+
+/getComments
+> {
+  "postId": 1,
+  ?"range": [10, 20]
+}
+< [
+  {
+    "commentId": 1,
+    "author": "Julie M.",
+    "text": "Très bonne initiative, surtout pour les personnes âgées qui utilisent les transports chaque jour.",
+    "date": 1651459600
+  }
+]
+
+/addComment
+> {
+  "token": "azerty",
+  "postId": 42,
+  "text": "azerty"
+}
+< {
+  "commentId": 1,
+  "author": "Julie M.",
+  "text": "Très bonne initiative, surtout pour les personnes âgées qui utilisent les transports chaque jour.",
+  "date": 1651459600
+}
+
+/deletePost
+> { "token": "azerty", "postId": 666 }
+< { "id": 666 }
+
+/likePost
+> { "token": "azerty", "postId": 42, "like": true|false }
+< { "id": 42, "like": true|false }
+
+/!\\ En cas d'erreur
+< { "error": "azerty" }
+

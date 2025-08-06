@@ -9,7 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 export default () => {
     return (<>
-        <div className="flex gap-5">
+        <div className="flex gap-5 flex-wrap sm:flex-nowrap justify-center">
 
             <Select>
                 <SelectTrigger className="w-[180px]">

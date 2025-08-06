@@ -8,16 +8,18 @@ import Tag from "./components/Tag"
 import Card from "./components/Card"
 import PopUpCreatePost from "./components/PopUpCreatePost"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import Posts from "./components/Posts"
 
+const isDarkEnabled = import.meta.env.VITE_DARK_MODE === "true";
 
 export default () => {
-
-    const [darkMode, setDarkMode] = useState(true)
+    
+    const [darkMode, setDarkMode] = useState(false)
     const toggleDarkMode = () => {
         const isDark = !darkMode
         setDarkMode(isDark)
-
+        
         if (isDark) {
             document.documentElement.classList.add('dark')
             // localStorage.setItem('theme', 'dark')
@@ -26,6 +28,9 @@ export default () => {
             // localStorage.setItem('theme', 'light')
         }
     }
+    useEffect(() => {
+        if (isDarkEnabled) toggleDarkMode()
+    }, []);
 
     let posts = [
         {
@@ -175,13 +180,15 @@ export default () => {
                     </div>
 
                     {/* <Cards /> */}
-
+                    {/* 
                     <div className="grid grid-cols-1 gap-12 px-5 sm:px-32 mt-16">
                         {
                             posts.sort((a, b) => a.date - b.date)
                                 .map(item => <Card key={item.id} postId={item.id} likeNumber={item.likeNumber} commentNumber={item.commentNumber} text={item.text}></Card>)
                         }
-                    </div>
+                    </div> */}
+                    <Posts posts={posts}></Posts>
+
                     {/* 
                     <div className="my-10">
                         <CatList />
