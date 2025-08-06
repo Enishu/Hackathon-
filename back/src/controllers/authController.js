@@ -144,7 +144,7 @@ export async function forgottenPassword(req, res) {
         const user = await User.findByEmail(email);
         if (!user?.is_verified) {
             return res.status(404).json({
-                error: "L'email n'existe pas ou n'a pas été confirmé.",
+                error: "L'email n'existe pas.",
             });
         }
 
@@ -154,12 +154,9 @@ export async function forgottenPassword(req, res) {
         });
         const emailTokenExpiresAt = new Date(jwt.decode(token).exp * 1000);
 
-        // Actualisation de la base avec les nouvelles données
-        await User.update({
-            id: user.id,
-            username: user.username,
+        // Actualisation de la base avec le nouveau délai d'expiration
+        await User.updateEmailTokenExpiration({
             email,
-            hashedPassword: user.hashedPassword,
             emailTokenExpiresAt,
         });
 
@@ -179,6 +176,42 @@ export async function forgottenPassword(req, res) {
         });
         res.status(201).json({
             message: "Un email de réinitialisation a été envoyé.",
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: `Le serveur a rencontré une erreur.` });
+    }
+}
+
+export async function resetPassword(req, res) {
+    try {
+        const { token } = req.params;
+        const { password, passwordConfirm } = req.body;
+
+        const { email } = jwt.verify(token, env.JWT_SECRET);
+
+        // Vérifications de saisie
+        if (!password || !passwordConfirm)
+            return res
+                .status(400)
+                .json({ error: `Tous les champs sont requis.` });
+
+        if (password !== passwordConfirm)
+            return res
+                .status(400)
+                .json({ error: `Les mots de passe ne correspondent pas.` });
+
+        // Hashage du mot de passe
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Actualisation de la base avec le nouveau mot de passe
+        await User.updatePassword({
+            email,
+            hashedPassword,
+        });
+
+        res.status(201).json({
+            message: "Le nouveau mot de passe a été enregistré",
         });
     } catch (error) {
         console.error(error);

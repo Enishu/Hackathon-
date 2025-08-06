@@ -42,6 +42,24 @@ export async function update(data) {
     return result;
 }
 
+export async function updateEmailTokenExpiration(data) {
+    const { email, emailTokenExpiresAt } = data;
+    const [result] = await pool.query(
+        "UPDATE users SET email_token_expires_at=? WHERE email=?",
+        [emailTokenExpiresAt, email]
+    );
+    return result;
+}
+
+export async function updatePassword(data) {
+    const { email, hashedPassword } = data;
+    const [result] = await pool.query(
+        "UPDATE users SET hashed_password=? WHERE email=?",
+        [hashedPassword, email]
+    );
+    return result;
+}
+
 export async function deleteUnverifiedUsers() {
     const [result] = await pool.query(
         "DELETE FROM users WHERE is_verified = false AND email_token_expires_at < NOW()"
