@@ -4,8 +4,9 @@ import Category from "./components/Category"
 import Posts from "./components/Posts"
 import { Badge } from "@/components/ui/badge"
 import { useState, useEffect } from "react"
-import { useFetch } from './hooks/useFetch'
 import { Toaster } from "@/components/ui/sonner"
+import { Button } from "@/components/ui/button"
+import { useFetch } from './hooks/useFetch'
 
 const isDarkEnabled = import.meta.env.VITE_DARK_MODE === "true";
 
@@ -41,91 +42,19 @@ export default () => {
         if (isDarkEnabled) toggleDarkMode()
     }, []);
 
-    let mockPosts = [
-    {
-        "id": 8,
-        "date": 1646179200,
-        "category": "Autres",
-        "text": "Créer un comité local composé de citoyens en situation de handicap pour conseiller la mairie sur les décisions d’aménagement.",
-        "likeNumber": 11,
-        "commentNumber": 1,
-        "author": "Thomas R."
-    },
-    {
-        "id": 2,
-        "date": 1648771200,
-        "category": "Éducation",
-        "text": "Adapter les infrastructures et le matériel pédagogique dans les centres de formation pour permettre l'accès à tous, sans discrimination physique.",
-        "likeNumber": 9,
-        "commentNumber": 2,
-        "author": "Jean P."
-    },
-    {
-        "id": 1,
-        "date": 1651363200,
-        "category": "Éducation",
-        "text": "Intégrer des ateliers sur le handicap et l’accessibilité dès l’école primaire pour développer l’empathie et la compréhension dès le plus jeune âge.",
-        "likeNumber": 12,
-        "commentNumber": 3,
-        "author": "Claire D."
-    },
-    {
-        "id": 3,
-        "date": 1646179200,
-        "category": "Mobilité",
-        "text": "Rendre tous les bus, trams et métros accessibles avec des rampes, annonces vocales et espaces réservés.",
-        "likeNumber": 20,
-        "commentNumber": 5,
-        "author": "Nora K."
-    },
-    {
-        "id": 4,
-        "date": 1646179200,
-        "category": "Mobilité",
-        "text": "Subventionner une flotte de véhicules adaptés disponibles à la demande, avec réservation simplifiée via une appli accessible.",
-        "likeNumber": 14,
-        "commentNumber": 4,
-        "author": "Luc M."
-    },
-    {
-        "id": 5,
-        "date": 1646179200,
-        "category": "Santé",
-        "text": "Développer les services médicaux à domicile pour les personnes à mobilité réduite avec un meilleur accès aux kinés, infirmiers et téléconsultation.",
-        "likeNumber": 17,
-        "commentNumber": 3,
-        "author": "Fatima B."
-    },
-    {
-        "id": 6,
-        "date": 1646179200,
-        "category": "Santé",
-        "text": "Obliger l’adaptation des cabinets de santé (rampes, portes larges, ascenseurs) pour garantir un accès physique à tous les professionnels de santé.",
-        "likeNumber": 13,
-        "commentNumber": 2,
-        "author": "Yves T."
-    },
-    {
-        "id": 7,
-        "date": 1646179200,
-        "category": "Urbanisme",
-        "text": "Refaire les trottoirs avec des matériaux antidérapants, des pentes douces, et des bandes podotactiles, tout en supprimant les obstacles inutiles.",
-        "likeNumber": 15,
-        "commentNumber": 3,
-        "author": "Lina S."
-    }
-]
-    const [posts, setPosts] = useState(mockPosts)
-    // const [loading, data, errors] = useFetch({route: "/getPosts", type: "GET"})
-    const { loading, data, errors } = useFetch({url: "https://api.jeremiel.dev/"})
-    useEffect(() => {
-        console.log("first")
-    }, []);
-
-
     return (
         <div className="py-10 h-full">
             <div className="mx-auto w-full max-w-4xl px-4">
+
+                {/* message d'erreur */}
+                {/* <Button
+                    variant="outline"
+                    onClick={() =>
+                        toast.error("Error: Cette adresse mail existe déjà.")
+                    }
+                >
+                    Show Toast
+                </Button> */}
 
                 {/* menu login, theme, addPost */}
                 <div className="fixed flex justify-center gap-3 z-10
@@ -224,11 +153,17 @@ export default () => {
 
                     {/* Ideas */}
                     <Posts
-                        posts={posts}
-                        className="mb-20"/>
-                    
+                        className="mb-20" />
+
                     {/* Messages d'erreurs */}
-                    <Toaster />
+                    {/* text-stone-700 bg-stone-100 dark:text-stone-200 dark:bg-slate-700 */}
+                    <Toaster
+                        toastOptions={{
+                            classNames: {
+                                toast: '!text-red-700 !bg-stone-100 dark:!text-red-200 dark:!bg-slate-700',
+                            },
+                        }}
+                    />
 
                 </div>
 

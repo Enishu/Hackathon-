@@ -1,9 +1,18 @@
 import { Badge } from "@/components/ui/badge"
 import PopUpComment from "./PopUpComment"
 import PopUpConfirmDelete from "./PopUpConfirmDelete"
+import { Skeleton } from "@/components/ui/skeleton"
 
-export default ({ text, postId, likesCount, commentsCount }) => {
-    return (
+
+export default ({ text, postId, likesCount, commentsCount, enableSkeleton = false }) => {
+    return (<>{enableSkeleton ?
+        <Skeleton className="relative p-3 rounded-2xl shadow-lg hover:scale-105 transition
+            bg-stone-100
+            dark:bg-slate-700
+            h-18" >
+            <p>{text}</p>
+        </Skeleton>
+        :
         <div className="relative p-3 rounded-2xl shadow-lg hover:scale-105 transition
             bg-stone-100
             dark:bg-slate-700">
@@ -22,10 +31,10 @@ export default ({ text, postId, likesCount, commentsCount }) => {
             </div>
             <p>{text}</p>
         </div>
-    )
+        }</>)
 }
 
-function BtnCircle({ src, badge = false, badgeCount = 0, activated = false, ...props }) {
+function BtnCircle({ src, badge = false, badgeCount, activated = false, ...props }) {
     return (<>
         <div {...props} className={`relative size-10 cursor-pointer rounded-full flex justify-center items-center shadow-lg ring-1
             ${activated ? "bg-stone-200" : "bg-stone-100"} hover:bg-stone-200 ring-stone-200 
