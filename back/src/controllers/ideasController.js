@@ -1,11 +1,19 @@
 // Logique de gestion des idees
 import * as IdeaModel from '../models/Ideas.js';
 
-// Recuperer toutes les idees
+// Recuperer toutes les idees avec pagination et tri
 export const getAllIdeas = async (req, res) => {
   try {
-    // Utilise le modèle SQL de votre collègue
-    const ideas = await IdeaModel.getAll();
+    const { order, limit, offset } = req.query;
+    
+    // Prepare les donnees pour le modele
+    const data = {};
+    if (order) data.order = order;
+    if (limit) data.limit = parseInt(limit);
+    if (offset) data.offset = parseInt(offset);
+    
+    // Utilise le modele SQL de votre collegue avec les nouvelles options
+    const ideas = await IdeaModel.getAll(data);
     
     res.status(200).json({
       success: true,
