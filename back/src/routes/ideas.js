@@ -5,7 +5,8 @@ import {
   getIdeaById,
   createIdeas,
   updateIdea,
-  deleteIdea
+  deleteIdea,
+  getIdeasByUser  // ✅ Nouvelle fonction
 } from '../controllers/ideasController.js';
 
 const router = express.Router();
@@ -24,5 +25,8 @@ router.put('/:id', auth, updateIdea);
 
 // DELETE /api/ideas/:id - Supprimer une idée (PROTÉGÉ)
 router.delete('/:id', auth, deleteIdea);
+
+// GET /api/ideas/user/:userId - Récupérer les idées d'un utilisateur (PUBLIC)
+router.get('/user/:userId', getIdeasByUser);
 
 export default router;

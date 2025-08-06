@@ -27,7 +27,7 @@ cd back
 npm install
 
 # Copier et configurer l'environnement
-cp .env.example .env
+cp .env
 # Éditer .env avec vos valeurs
 
 # Démarrer en développement
