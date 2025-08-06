@@ -1,12 +1,12 @@
 import env from "../config/env.js";
-import * as User from "../models/User.cjs";
+import * as User from "../models/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/emailSender.js";
 
 export async function register(req, res) {
     try {
-        const { email, password, passwordConfirm } = req.body;
+        const { avatar, email, password, passwordConfirm } = req.body;
 
         // Vérifications de saisie
         if (!email || !password || !passwordConfirm)
@@ -38,13 +38,14 @@ export async function register(req, res) {
         if (user && !user.is_verified)
             await User.update({
                 id: user.id,
+                avatar,
                 email,
                 hashedPassword,
                 emailTokenExpiresAt,
             });
         else {
             // Sinon, création de l'utilisateur
-            await User.create({ email, hashedPassword, emailTokenExpiresAt });
+            await User.create({ avatar, email, hashedPassword, emailTokenExpiresAt });
         }
 
         // Création de l'email de validation
