@@ -1,0 +1,66 @@
+-- CREATE DATABASE IF NOT EXISTS hackaton_boite_idees;
+CREATE TABLE
+    IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        -- username VARCHAR(255) NOT NULL UNIQUE,
+        -- firstname VARCHAR(255) DEFAULT NULL,
+        -- lastname VARCHAR(255) DEFAULT NULL,
+        -- avatar_url VARCHAR(255) DEFAULT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        hashed_password VARCHAR(255) NOT NULL,
+        role ENUM ('admin', 'user') NOT NULL DEFAULT 'user',
+        email_token_expires_at TIMESTAMP DEFAULT NULL,
+        is_verified BOOLEAN NOT NULL DEFAULT FALSE,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        last_login_at TIMESTAMP DEFAULT NULL
+    );
+
+CREATE TABLE
+    IF NOT EXISTS categories (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        icon_url VARCHAR(255)
+    );
+
+CREATE TABLE
+    IF NOT EXISTS ideas (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        text VARCHAR(1000) NOT NULL,
+        user_id INT NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    );
+
+CREATE TABLE
+    IF NOT EXISTS idea_category (
+        idea_id INT NOT NULL,
+        category_id INT NOT NULL,
+        PRIMARY KEY (idea_id, category_id),
+        FOREIGN KEY (idea_id) REFERENCES ideas (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+        FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    );
+
+CREATE TABLE
+    IF NOT EXISTS comments (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        text VARCHAR(255) NOT NULL,
+        idea_id INT NOT NULL,
+        user_id INT NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        FOREIGN KEY (idea_id) REFERENCES ideas (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    );
+
+CREATE TABLE
+    IF NOT EXISTS likes (
+        idea_id INT NOT NULL,
+        user_id INT NOT NULL,
+        -- created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        -- updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (idea_id, user_id),
+        FOREIGN KEY (idea_id) REFERENCES ideas (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE RESTRICT ON UPDATE RESTRICT
+    );
