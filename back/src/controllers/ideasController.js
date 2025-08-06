@@ -144,6 +144,24 @@ export const toggleLike = async (req, res) => {
   }
 };
 
+// Pouvoir affihcer le nombre de likes d'une idées
+export const getLikeCount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const count = await db.getLikeCount(parseInt(id));
+    res.json({
+      success: true,
+      data: count
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Erreur lors de la récupération du nombre de likes'
+    });
+  }
+};
+
 // Récupérer les commentaires d'une idée
 export const getComments = async (req, res) => {
   try {
@@ -159,6 +177,24 @@ export const getComments = async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Erreur lors de la récupération des commentaires'
+    });
+  }
+};
+
+//pouvoir afficher le nombre de commentaires d'un idée
+export const getCommentCount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const count = await db.getCommentCount(parseInt(id));
+    res.json({
+      success: true,
+      data: count
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Erreur lors de la récupération du nombre de commentaires'
     });
   }
 };

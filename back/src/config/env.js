@@ -25,3 +25,5 @@ const env = cleanEnv(process.env, {
 });
 
 export default env;
+
+// librairie de validation d'environnement qui sert à vérifier que les variables d'environnement sont bien définies et au bon format cela peremet de s'assurer que l'application ne démarre pas si les variables d'environnement sont manquantes ou incorrectes. Il écrit les variables d'environnement dans un fichier .env.local pour les utiliser en développement.

@@ -66,15 +66,6 @@ app.get('/api/test', (req, res) => {
   });
 });
 
-// Route de santé
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    uptime: process.uptime(),
-    timestamp: new Date().toISOString()
-  });
-});
-
 // 404
 app.use('*', (req, res) => {
   res.status(404).json({ 
@@ -93,10 +84,10 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Serveur lancé sur le port ${PORT}`);
-  console.log(`📍 Test: http://localhost:${PORT}/api/test`);
-  console.log(`💚 Health: http://localhost:${PORT}/api/health`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`Serveur lancé sur le port ${PORT}`);
+  console.log(`Test: http://localhost:${PORT}/api/test`);
+  console.log(`Health: http://localhost:${PORT}/api/health`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 export default app;
