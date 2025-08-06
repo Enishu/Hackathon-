@@ -9,13 +9,9 @@ import {
     DialogTrigger,
     DialogOverlay,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import CatList from "./CatList"
-import { Textarea } from "@/components/ui/textarea"
 
-export default ({children}) => {
+
+export default ({ children, postId }) => {
     return <>
         <Dialog>
             <form>
@@ -23,25 +19,24 @@ export default ({children}) => {
                     {children}
                 </DialogTrigger>
                 <DialogOverlay className="bg-transparent backdrop-blur-sm" />
-                <DialogContent className="sm:max-w-[425px] bg-amber-50 shadow-lg
+                <DialogContent className="sm:max-w-[475px] bg-amber-50 shadow-lg
                 dark:bg-slate-800">
                     <DialogHeader>
-                        <DialogTitle>Proposé une idée</DialogTitle>
+                        <DialogTitle>Êtes-vous sûr(e) de vouloir supprimer ce post ?</DialogTitle>
                         <DialogDescription>
-
                         </DialogDescription>
                     </DialogHeader>
                     <div className="grid gap-4">
-                        <div className="grid gap-3">
+                        {/* <div className="grid gap-3">
                             <Label htmlFor="name-1">Text</Label>
-                            {/* <Input id="name-1" name="name" /> */}
-                            <Textarea id="name-1" name="name" className="h-24"/>
-                        </div>
+                            <Input id="name-1" name="name" />
+                        </div> */}
                     </div>
-                    <CatList></CatList>
                     <DialogFooter>
-                        <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
-                        dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Publier</Button>
+                        <div className="w-full flex justify-center">
+                            <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
+                        dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">OUI Supprimer</Button>
+                        </div>
                     </DialogFooter>
                 </DialogContent>
             </form>
