@@ -1,50 +1,22 @@
-import { 
-  ideas, 
-  getNextId, 
-  getIdeasWithDetails, 
-  getIdeaById as getIdeaFromData,
-  users,
-  categories 
-} from '../models/data.js';
+import 
 import Joi from 'joi';
 
-// Schémas de validation
+// Validation simple
 const ideaSchema = Joi.object({
-  title: Joi.string().min(3).max(100).required(),
   description: Joi.string().min(10).max(500).required(),
-  categoryId: Joi.number().integer().positive().optional(),
   userId: Joi.number().integer().positive().required()
 });
 
-const updateIdeaSchema = Joi.object({
-  title: Joi.string().min(3).max(100).optional(),
-  description: Joi.string().min(10).max(500).optional(),
-  categoryId: Joi.number().integer().positive().optional(),
-  status: Joi.string().valid('pending', 'approved', 'rejected').optional()
-});
-
-// Récupérer toutes les idées avec leurs détails complets
-const getAllIdeas = (req, res) => {
+// Récupérer toutes les idées
+export const getAllIdeas = async (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const startIndex = (page - 1) * limit;
-    const endIndex = page * limit;
-    
-    const ideasWithDetails = getIdeasWithDetails();
-    const paginatedIdeas = ideasWithDetails.slice(startIndex, endIndex);
-    
+    const ideas = await db.getIdeas();
     res.json({
       success: true,
-      data: paginatedIdeas,
-      pagination: {
-        currentPage: page,
-        totalPages: Math.ceil(ideasWithDetails.length / limit),
-        totalItems: ideasWithDetails.length,
-        itemsPerPage: limit
-      }
+      data: ideas
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       error: 'Erreur lors de la récupération des idées'
@@ -52,11 +24,11 @@ const getAllIdeas = (req, res) => {
   }
 };
 
-// Récupérer une idée par son ID
-const getIdeaById = (req, res) => {
+// Récupérer une idée par ID
+export const getIdeaById = async (req, res) => {
   try {
     const { id } = req.params;
-    const idea = getIdeaFromData(parseInt(id));
+    const idea = await db.getIdeaById(parseInt(id));
     
     if (!idea) {
       return res.status(404).json({
@@ -70,6 +42,7 @@ const getIdeaById = (req, res) => {
       data: idea
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       error: 'Erreur lors de la récupération de l\'idée'
@@ -78,9 +51,8 @@ const getIdeaById = (req, res) => {
 };
 
 // Créer une nouvelle idée
-const createIdea = (req, res) => {
+export const createIdea = async (req, res) => {
   try {
-    // Validation avec Joi
     const { error, value } = ideaSchema.validate(req.body);
     if (error) {
       return res.status(400).json({
@@ -90,47 +62,18 @@ const createIdea = (req, res) => {
       });
     }
     
-    const { title, description, categoryId, userId } = value;
+    const { description, userId } = value;
     
-    // Vérifier que l'utilisateur existe (pour l'instant, utiliser userId=1 par défaut)
-    const user = users.find(u => u.id === userId) || users[0];
-    if (!user) {
-      return res.status(400).json({
-        success: false,
-        error: 'Utilisateur non trouvé'
-      });
-    }
-    
-    // Vérifier que la catégorie existe
-    if (categoryId && !categories.find(c => c.id === categoryId)) {
-      return res.status(400).json({
-        success: false,
-        error: 'Catégorie non trouvée'
-      });
-    }
-    
-    const newIdea = {
-      id: getNextId(ideas),
-      title: title.trim(),
-      description: description.trim(),
-      userId: user.id,
-      categoryId: categoryId || null,
-      status: 'pending',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    
-    ideas.push(newIdea);
-    
-    // Retourner l'idée avec ses détails complets
-    const ideaWithDetails = getIdeaFromData(newIdea.id);
+    const ideaId = await db.createIdea(description, userId);
+    const newIdea = await db.getIdeaById(ideaId);
     
     res.status(201).json({
       success: true,
-      data: ideaWithDetails,
+      data: newIdea,
       message: 'Idée créée avec succès'
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       error: 'Erreur lors de la création de l\'idée'
@@ -138,73 +81,36 @@ const createIdea = (req, res) => {
   }
 };
 
-// Mettre à jour une idée (pour plus tard, avec authentification)
-const updateIdea = (req, res) => {
+// Supprimer une idée si Admin ou auteur
+export const deleteIdea = async (req, res) => {
   try {
     const { id } = req.params;
+    const userId = req.body.userId || 1; // Simuler un utilisateur connecté
     
-    // Validation avec Joi
-    const { error, value } = updateIdeaSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({
-        success: false,
-        error: 'Données invalides',
-        details: error.details.map(d => d.message)
-      });
-    }
-    
-    const { title, description, categoryId, status } = value;
-    
-    const ideaIndex = ideas.findIndex(i => i.id === parseInt(id));
-    if (ideaIndex === -1) {
+    // Vérifier si l'utilisateur est admin ou auteur de l'idée
+    const idea = await db.getIdeaById(parseInt(id));
+    if (!idea) {
       return res.status(404).json({
         success: false,
         error: 'Idée non trouvée'
       });
     }
-    
-    // Mise à jour des champs fournis
-    if (title) ideas[ideaIndex].title = title.trim();
-    if (description) ideas[ideaIndex].description = description.trim();
-    if (categoryId) ideas[ideaIndex].categoryId = categoryId;
-    if (status) ideas[ideaIndex].status = status;
-    ideas[ideaIndex].updatedAt = new Date().toISOString();
-    
-    const updatedIdea = getIdeaFromData(parseInt(id));
-    
-    res.json({
-      success: true,
-      data: updatedIdea,
-      message: 'Idée mise à jour avec succès'
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      error: 'Erreur lors de la mise à jour de l\'idée'
-    });
-  }
-};
 
-// Supprimer une idée (pour plus tard, avec authentification)
-const deleteIdea = (req, res) => {
-  try {
-    const { id } = req.params;
-    const ideaIndex = ideas.findIndex(i => i.id === parseInt(id));
-    
-    if (ideaIndex === -1) {
-      return res.status(404).json({
+    // Vérifier si l'utilisateur est admin ou auteur de l'idée
+    if (userId !== idea.userId && !isAdmin(userId)) {
+      return res.status(403).json({
         success: false,
-        error: 'Idée non trouvée'
+        error: 'Accès refusé'
       });
     }
-    
-    ideas.splice(ideaIndex, 1);
-    
+
+    await db.deleteIdea(parseInt(id));
     res.json({
       success: true,
       message: 'Idée supprimée avec succès'
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       success: false,
       error: 'Erreur lors de la suppression de l\'idée'
@@ -212,10 +118,85 @@ const deleteIdea = (req, res) => {
   }
 };
 
-export {
-  getAllIdeas,
-  getIdeaById,
-  createIdea,
-  updateIdea,
-  deleteIdea
+
+
+// Toggle like/unlike
+export const toggleLike = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.body.userId || 1;
+    
+    const result = await db.toggleLike(parseInt(id), userId);
+    const updatedIdea = await db.getIdeaById(parseInt(id));
+    
+    res.json({
+      success: true,
+      data: updatedIdea,
+      message: result.action === 'added' ? 'Idée likée avec succès' : 'Like retiré avec succès',
+      isLiked: result.isLiked
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Erreur lors du toggle du like'
+    });
+  }
+};
+
+// Récupérer les commentaires d'une idée
+export const getComments = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const comments = await db.getComments(parseInt(id));
+    
+    res.json({
+      success: true,
+      data: comments
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Erreur lors de la récupération des commentaires'
+    });
+  }
+};
+
+// Ajouter un commentaire
+export const addComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { content, userId } = req.body;
+    
+    if (!content || content.trim().length < 1) {
+      return res.status(400).json({
+        success: false,
+        error: 'Le contenu du commentaire est requis'
+      });
+    }
+    
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'L\'utilisateur est requis'
+      });
+    }
+    
+    const commentId = await db.addComment(parseInt(id), userId, content.trim());
+    const comments = await db.getComments(parseInt(id));
+    const newComment = comments.find(c => c.id === commentId);
+    
+    res.status(201).json({
+      success: true,
+      data: newComment,
+      message: 'Commentaire ajouté avec succès'
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: 'Erreur lors de l\'ajout du commentaire'
+    });
+  }
 };

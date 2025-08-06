@@ -3,8 +3,9 @@ import {
   getAllIdeas, 
   getIdeaById, 
   createIdea, 
-  updateIdea, 
-  deleteIdea 
+  toggleLike,
+  getComments,
+  addComment
 } from '../controllers/ideasController.js';
 
 const router = express.Router();
@@ -18,10 +19,13 @@ router.get('/:id', getIdeaById);
 // POST /api/ideas - Créer une nouvelle idée
 router.post('/', createIdea);
 
-// PUT /api/ideas/:id - Mettre à jour une idée (pour plus tard)
-router.put('/:id', updateIdea);
+// POST /api/ideas/:id/like - Toggle like/unlike automatique
+router.post('/:id/like', toggleLike);
 
-// DELETE /api/ideas/:id - Supprimer une idée (pour plus tard)
-router.delete('/:id', deleteIdea);
+// GET /api/ideas/:id/comments - Récupérer les commentaires d'une idée
+router.get('/:id/comments', getComments);
+
+// POST /api/ideas/:id/comments - Ajouter un commentaire à une idée
+router.post('/:id/comments', addComment);
 
 export default router;
