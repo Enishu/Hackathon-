@@ -2,7 +2,7 @@
 CREATE TABLE
     IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        -- username VARCHAR(255) NOT NULL UNIQUE,
+        username VARCHAR(255) NOT NULL UNIQUE,
         -- firstname VARCHAR(255) DEFAULT NULL,
         -- lastname VARCHAR(255) DEFAULT NULL,
         -- avatar_url VARCHAR(255) DEFAULT NULL,
