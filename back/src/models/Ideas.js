@@ -14,6 +14,13 @@ export async function getAll() {
     return rows;
 }
 
+export async function findById(id) {
+    const [rows] = await pool.query("SELECT * FROM ideas WHERE id=?", [
+        id,
+    ]);
+    return rows.length ? rows[0] : null;
+}
+
 export async function findByUserId(userId) {
     const [rows] = await pool.query("SELECT * FROM ideas WHERE user_id=?", [
         userId,
