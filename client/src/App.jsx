@@ -4,6 +4,8 @@ import Category from "./components/Category"
 import Posts from "./components/Posts"
 import { Badge } from "@/components/ui/badge"
 import { useState, useEffect } from "react"
+import { useFetch } from './hooks/useFetch'
+import { Toaster } from "@/components/ui/sonner"
 
 const isDarkEnabled = import.meta.env.VITE_DARK_MODE === "true";
 
@@ -114,6 +116,8 @@ export default () => {
     }
 ]
     const [posts, setPosts] = useState(mockPosts)
+    // const [loading, data, errors] = useFetch({route: "/getPosts", type: "GET"})
+    const { loading, data, errors } = useFetch({url: "https://api.jeremiel.dev/"})
     useEffect(() => {
         console.log("first")
     }, []);
@@ -222,6 +226,9 @@ export default () => {
                     <Posts
                         posts={posts}
                         className="mb-20"/>
+                    
+                    {/* Messages d'erreurs */}
+                    <Toaster />
 
                 </div>
 

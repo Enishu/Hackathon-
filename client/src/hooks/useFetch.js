@@ -1,11 +1,8 @@
 //const {data, loading, errors} = useFetch('http://monapi')
 
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-/**
- * @param {string} url
- * @param {FetchEventInit} options
- */
+
 export function useFetch (url, options = {}) {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
@@ -27,7 +24,7 @@ export function useFetch (url, options = {}) {
         })
     }, []);
 
-    return {
-        loading, data, errors
-    }
+    return { loading, data, errors }
+
 }
+
