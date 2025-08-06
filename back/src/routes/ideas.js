@@ -6,6 +6,7 @@ import {
   updateIdea, 
   deleteIdea 
 } from '../controllers/ideasController.js';
+import verifyAuthToken from '../middlewares/verifyAuthToken.js'
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ router.get('/', getAllIdeas);
 router.get('/:id', getIdeaById);
 
 // POST /api/ideas - Créer une nouvelle idée
-router.post('/', createIdea);
+router.post('/', verifyAuthToken, createIdea);
 
 // PUT /api/ideas/:id - Mettre à jour une idée (pour plus tard)
 router.put('/:id', updateIdea);
