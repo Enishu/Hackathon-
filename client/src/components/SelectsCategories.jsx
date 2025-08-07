@@ -6,11 +6,13 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 
-export default () => {
+export default ({ cat1, setCat1, cat2, setCat2 }) => {
+
+    console.log(cat1)
     return (<>
         <div className="flex gap-5 flex-wrap sm:flex-nowrap justify-center">
 
-            <Select>
+            <Select onValueChange={setCat1} value={cat1}>
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Categories" />
                 </SelectTrigger>
@@ -24,7 +26,7 @@ export default () => {
                 </SelectContent>
             </Select>
 
-            <Select>
+            <Select onValueChange={setCat2} value={cat2}>
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Handicap" />
                 </SelectTrigger>
