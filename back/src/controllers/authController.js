@@ -9,7 +9,7 @@ export async function register(req, res) {
         const { username, email, password, passwordConfirm } = req.body;
 
         // Vérifications de saisie
-        if (!email || !password || !passwordConfirm)
+        if (!username || !email || !password || !passwordConfirm)
             return res
                 .status(400)
                 .json({ error: `Tous les champs sont requis.` });
