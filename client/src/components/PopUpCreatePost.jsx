@@ -25,6 +25,8 @@ export default ({ children, setRefreshApp }) => {
     const [data, setData] = useState([])
     const [error, setError] = useState(null)
 
+    const [openModal, setOpenModal] = useState(false) //modal
+
     const sendPost = e => {
         e.preventDefault();
         setLoading(true)
@@ -33,7 +35,7 @@ export default ({ children, setRefreshApp }) => {
             if (!res.error) {
                 setData(res.data)
                 setRefreshApp()
-                // setOpenModal(false)
+                setOpenModal(false)
             } else {
                 setError(true)
             }
@@ -41,7 +43,7 @@ export default ({ children, setRefreshApp }) => {
     }
 
     return <>
-        <Dialog>
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
             <DialogTrigger asChild>
                 {children}
             </DialogTrigger>
