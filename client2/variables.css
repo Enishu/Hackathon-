@@ -1,0 +1,58 @@
+:root {
+  /* Thème clair par défaut */
+  --color-bg: #f0f2f5;
+  --color-white: #ffffff;
+  --color-black: #1f2937;
+  --color-muted: #6b7280;
+  --color-border: #d1d5db;
+
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-secondary-hover: #f3f4f6;
+
+  --color-education: #8b5cf6;
+  --color-sante: #10b981;
+  --color-transport: #f59e0b;
+  --color-loisir: #ec4899;
+  --color-urbanisme: #9ca3af;
+  --color-sport: #22c55e;
+
+  --color-handicap-bg: #e8f0fe;
+  --color-handicap-border: #3b82f6;
+
+  --font-main: 'Inter', sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 10px rgba(0, 0, 0, 0.08);
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 20px;
+}
+
+[data-theme="dark"] {
+  --color-bg: #1e1e2f;
+  --color-white: #2c2c3a;
+  --color-black: #f9fafb;
+  --color-muted: #9ca3af;
+  --color-border: #3a3a4a;
+
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-secondary-hover: #374151;
+
+  --color-education: #a78bfa;
+  --color-sante: #34d399;
+  --color-transport: #fbbf24;
+  --color-loisir: #f472b6;
+  --color-urbanisme: #6b7280;
+  --color-sport: #16a34a;
+
+  --color-handicap-bg: #2e3440;
+  --color-handicap-border: #60a5fa;
+}

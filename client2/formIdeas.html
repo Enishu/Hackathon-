@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<section class="form-section">
+  <h2>Proposer une nouvelle idée</h2>
+  <form id="idee-form">
+    <div class="form-group">
+      <label for="titre">Titre de l’idée</label>
+      <input type="text" id="titre" name="titre" required placeholder="Ex : Accessibilité des transports publics" />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" required placeholder="Décrivez votre idée en quelques phrases..."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="theme">Thème</label>
+      <select id="theme" name="theme_id" required>
+        <option value="">-- Choisir un thème --</option>
+        <option value="1">Éducation</option>
+        <option value="2">Santé</option>
+        <option value="3">Transport</option>
+        <option value="4">Loisir</option>
+        <option value="5">Urbanisme</option>
+        <option value="6">Sport</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Types de handicap concernés :</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="handicaps" value="1" /> Cognitif</label>
+        <label><input type="checkbox" name="handicaps" value="2" /> Auditif</label>
+        <label><input type="checkbox" name="handicaps" value="3" /> Visuel</label>
+        <label><input type="checkbox" name="handicaps" value="4" /> Moteur</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn primary">Soumettre l’idée</button>
+  </form>
+</section>

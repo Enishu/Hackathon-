@@ -1,0 +1,18 @@
+@media (max-width: 480px) {
+  .auth-container {
+    padding: var(--space-md);
+    margin: var(--space-sm);
+  }
+
+  .toggle-form {
+    flex-direction: column;
+  }
+
+  .toggle-form button {
+    margin-bottom: var(--space-sm);
+  }
+
+  .toggle-form button:not(:last-child) {
+    margin-right: 0;
+  }
+}
