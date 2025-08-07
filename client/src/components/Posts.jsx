@@ -32,14 +32,14 @@ export default ({ className, filters }) => {
         request({ action: "getPosts", params: fetchParams }).then(res => {
             setLoading(false)
             if (!res.error) {
-                setData(res.data)
+                setData(res.data.data)
             } else {
                 setError(true)
             }
         })
     }, [filters]);
 
-    let sortedPosts = toggleSortFilters ? posts.sort((a, b) => b.date - a.date) : posts.sort((a, b) => b.likeNumber - a.likeNumber)
+    let sortedPosts = toggleSortFilters ? [...posts].sort((a, b) => b.updated_at - a.updated_at) : [...posts].sort((a, b) => b.likesCount - a.likesCount)
 
     return (<>
         <div className="flex flex-wrap justify-center gap-4 mt-3">
@@ -66,7 +66,7 @@ export default ({ className, filters }) => {
                     <img className="size-32 inline" src="./src/icons/error.svg" alt="" />
                 </div>
                 :
-                sortedPosts.map(item => <Post key={item.id} postId={item.id} likesCount={item.likeNumber} commentsCount={item.commentNumber} text={item.text} author={item.author}></Post>)
+                sortedPosts.map(item => <Post key={item.id} postId={item.id} likesCount={item.likesCount} commentsCount={item.commentsCount} text={item.text} author={item.author} updated_at={item.updated_at}></Post>)
             }
         </div>
     </>)

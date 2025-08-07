@@ -1,18 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="src/style.css">
-    <script type="module" src="src/main.jsx"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Boîte 🗳️</title>
+  <link rel="stylesheet" href="src/style.css">
+  <script type="module" src="src/main.jsx"></script>
+  <link rel="icon" href="data:," />
 </head>
 <!-- body: bg-slate-800 -->
 <!-- popup: text-indigo-50 bg-slate-800 -->
 <!-- ellements dans le main: bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 -->
 <!-- popup btn: bg-indigo-800 hover:bg-indigo-900 active:bg-indigo-950 -->
-<body class="text-stone-700 bg-amber-50
-            dark:text-stone-200 dark:bg-slate-800">
-    <div id="root"></div>
+
+<!-- <body class="text-stone-700 bg-amber-50
+            dark:text-stone-200 dark:bg-slate-800"> -->
+
+<body class="text-stone-700 bg-amber-50 dark:text-stone-200 dark:bg-slate-800">
+
+  <!-- complete arrière plan en haut en bas -->
+  <div class="fixed inset-0 -z-10
+            dark:text-stone-200 dark:bg-linear-to-tl dark:from-slate-700 dark:to-slate-800"></div>
+
+  <div id="root"></div>
 </body>
+
 </html>

@@ -12,7 +12,7 @@ export function request({ action, params }) {
 
         //MOCK
         function mock(action) {
-            if (action == "getPosts")
+            if (action == "getPosts2")
                 return ({ loading: false, data: posts, error: null, params })
             return false
         }
@@ -35,7 +35,7 @@ export function request({ action, params }) {
         let body = {}
 
         if (action == "getPosts") {
-            route = "/"
+            route = "/ideas "
             method = "GET"
         }
         if (action == "auth") {
@@ -46,8 +46,12 @@ export function request({ action, params }) {
             route = "/ideas"
             method = "POST"
         }
+        if (action == "setLike") {
+            route = `/ideas/${params.postId}/likes`
+            params.like ? method = "POST" : method = "DELETE"
+        }
 
-        if (method == "POST") {
+        if (method == "POST" || method == "DELETE") {
             headers = {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${loginToken}`
@@ -67,14 +71,27 @@ export function request({ action, params }) {
                 let data = []
                 let error = null
                 let loading = true
-                fetch(url, {
-                    method,
-                    headers,
-                    body
-                }).then(r => r.json()).then(r2 => {
+
+                let payload = {}
+                if (method == "GET") {
+                    payload = {
+                        method,
+                        headers,
+                    }
+                } else {
+                    payload = {
+                        method,
+                        headers,
+                        body
+                    }
+                }
+
+                fetch(url, payload).then(r => r.json()).then(r2 => {
                     data = r2
                     if (data.error)
                         throw new Error(`Erreur du serveur : ${data.error}`);
+                    if (data.success == false) //PATCH TEMPORAIRE
+                        throw new Error(`Erreur du serveur : ${data.message}`);
                 }).catch((e) => {
                     error = e
                     toast.error(e.message)

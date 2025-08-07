@@ -1,3 +1,4 @@
+import { LoaderCircle } from "lucide-react";
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
@@ -77,7 +78,11 @@ export default ({ children, setRefreshApp }) => {
                         cat2={cat2} />
                     <DialogFooter>
                         <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
-                        dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Publier</Button>
+                        dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">
+                            {!loading ? "Publier" :
+                                <LoaderCircle className="size-full w-12 animate-spin" />
+                            }
+                        </Button>
                     </DialogFooter>
                 </form>
 
