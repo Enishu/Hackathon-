@@ -4,7 +4,7 @@ import { toast } from "sonner"
 
 //MOCK
 import posts from './mocks/getPosts.json';
-// import useStore from '../hooks/store';
+import useStore from '../hooks/store';
 
 
 export function request({ action, params }) {
@@ -26,6 +26,7 @@ export function request({ action, params }) {
         }
 
         // const token = useStore((state) => state.token)
+        const { loginToken } = useStore.getState()
 
         //adaptateur
         let route = "/"
@@ -41,16 +42,18 @@ export function request({ action, params }) {
             route = "/auth/login"
             method = "POST"
         }
+        if (action == "addPost") {
+            route = "/ideas"
+            method = "POST"
+        }
 
         if (method == "POST") {
             headers = {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer TON_JETON_ICI`
+                'Authorization': `Bearer ${loginToken}`
             }
             body = JSON.stringify(params)
-            // console.log(body)
         }
-        // console.log("request", token)
 
         const domain = "http://localhost:3002/api"
         const url = domain + route

@@ -8,7 +8,6 @@ import {
 
 export default ({ cat1, setCat1, cat2, setCat2 }) => {
 
-    console.log(cat1)
     return (<>
         <div className="flex gap-5 flex-wrap sm:flex-nowrap justify-center">
 
