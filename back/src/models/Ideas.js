@@ -25,12 +25,13 @@ export async function getAll(data) {
             JOIN idea_category ic ON i.id = ic.idea_id
             WHERE ic.category_id IN (${categoryIds})
         `);
-    else
-        query_elements.push(
-            `SELECT * FROM ideas ORDER BY created_at ${
-                ["ASC", "DESC"].includes(order) ? order : "DESC"
-            }`
-        );
+    else query_elements.push(`SELECT i.* FROM ideas i`);
+
+    query_elements.push(
+        `ORDER BY i.created_at ${
+            ["ASC", "DESC"].includes(order) ? order : "DESC"
+        }`
+    );
 
     if (limit > 0) {
         query_elements.push(`LIMIT ?`);
@@ -43,6 +44,7 @@ export async function getAll(data) {
     }
 
     const query = query_elements.join(" ");
+    
     const [rows] = await pool.query(query, params);
     return rows;
 }
