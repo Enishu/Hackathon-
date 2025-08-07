@@ -1,0 +1,89 @@
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.auth-container {
+  background-color: var(--color-white);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-title {
+  text-align: center;
+  margin-bottom: var(--space-md);
+  font-size: 20px;
+}
+
+.toggle-form {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.toggle-form button {
+  flex: 1;
+  padding: var(--space-sm);
+  border: none;
+  background-color: var(--color-secondary);
+  color: var(--color-black);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+  border-radius: var(--radius-sm);
+}
+
+.toggle-form button.active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.toggle-form button:not(:last-child) {
+  margin-right: var(--space-sm);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form label {
+  margin-bottom: var(--space-xs);
+  font-size: 14px;
+}
+
+.auth-form input {
+  padding: var(--space-sm);
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  font-size: 14px;
+}
+
+.btn-auth {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  padding: var(--space-sm);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-auth:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.hidden {
+  display: none;
+}
