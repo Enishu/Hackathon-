@@ -2,6 +2,8 @@
 import * as IdeaModel from '../models/Ideas.js';
 import * as CategoryModel from '../models/Categories.js';
 import * as IdeaCategoryModel from '../models/IdeaCategory.js';
+import * as LikeModel from '../models/Likes.js';
+import * as CommentModel from '../models/Comments.js';
 
 // Recuperer toutes les idees avec pagination et tri
 export const getAllIdeas = async (req, res) => {
@@ -24,10 +26,38 @@ export const getAllIdeas = async (req, res) => {
     // Utilise le modele SQL avec les nouvelles options
     const ideas = await IdeaModel.getAll(data);
     
+    // Enrichir chaque idée avec les compteurs de likes et commentaires
+    const enrichedIdeas = await Promise.all(
+      ideas.map(async (idea) => {
+        // Récupérer le nombre de likes (avec gestion d'erreur)
+        let likesCount = 0;
+        try {
+          likesCount = await LikeModel.countByIdeaId(idea.id) || 0;
+        } catch (error) {
+          console.warn(`Erreur lors du comptage des likes pour l'idée ${idea.id}:`, error);
+        }
+        
+        // Récupérer le nombre de commentaires
+        let commentsCount = 0;
+        try {
+          const comments = await CommentModel.findByIdeaId(idea.id);
+          commentsCount = comments ? comments.length : 0;
+        } catch (error) {
+          console.warn(`Erreur lors du comptage des commentaires pour l'idée ${idea.id}:`, error);
+        }
+        
+        return {
+          ...idea,
+          likesCount,
+          commentsCount
+        };
+      })
+    );
+    
     res.status(200).json({
       success: true,
       message: 'Idees recuperees avec succes',
-      data: ideas
+      data: enrichedIdeas
     });
   } catch (error) {
     console.error('Erreur lors de la recuperation des idees:', error);
