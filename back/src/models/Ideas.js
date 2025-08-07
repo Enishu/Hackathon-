@@ -12,15 +12,29 @@ export async function create(data) {
     return result;
 }
 
-export async function getAll() {
-    const [rows] = await pool.query("SELECT * FROM ideas");
+export async function getAll(data) {
+    const { order, limit, offset } = data;
+    const query_elements = [`SELECT * FROM ideas`];
+    const params = [];
+    if (["ASC", "DESC"].includes(order)) {
+        query_elements.push(`ORDER BY created_at ?`);
+        params.push(order);
+    }
+    if (limit > 0) {
+        query_elements.push(`LIMIT ?`);
+        params.push(limit);
+    }
+    if (offset > 0) {
+        query_elements.push(`OFFSET ?`);
+        params.push(offset);
+    }
+    const query = query_elements.join(" ");
+    const [rows] = await pool.query(query, params);
     return rows;
 }
 
 export async function findById(id) {
-    const [rows] = await pool.query("SELECT * FROM ideas WHERE id=?", [
-        id,
-    ]);
+    const [rows] = await pool.query("SELECT * FROM ideas WHERE id=?", [id]);
     return rows.length ? rows[0] : null;
 }
 
@@ -41,8 +55,6 @@ export async function update(data) {
 }
 
 export async function remove(id) {
-    const [result] = await pool.query(
-        "DELETE FROM ideas WHERE id=?", [id]
-    );
+    const [result] = await pool.query("DELETE FROM ideas WHERE id=?", [id]);
     return result;
 }

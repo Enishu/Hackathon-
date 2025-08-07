@@ -125,7 +125,13 @@ export async function login(req, res) {
         // Enregistre la connexion dans la base
         await User.recordLastLogin(email);
 
-        res.status(200).json({ message: `Connexion réussie.`, token: token });
+        res.status(200).json({
+            message: `Connexion réussie.`,
+            token: token,
+            user: {
+                username: user.username,
+            },
+        });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: `Le serveur a rencontré une erreur.` });
