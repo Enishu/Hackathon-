@@ -1,0 +1,51 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJoZzY0b2ZmK2JvaXRlYWlkZWUwMUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc1NDU2ODQ5NCwiZXhwIjoxNzU0NTkwMDk0fQ.YaANlh-f3T4yUCp91PM_Qs8BA9Z-4J_5XwgO-nTcEYY
+@idea_id = 52
+
+
+### Récupérer toutes les idées (du plus récent au plus ancien par défaut)
+GET http://{{host}}/api/ideas
+Content-Type: application/json
+
+
+### Récupérer toutes les idées (avec les options)
+GET http://{{host}}/api/ideas?order=DESC&limit=20&offset=20
+Content-Type: application/json
+
+
+### Créer une idée (après authentification)
+POST http://{{host}}/api/ideas
+Content-Type: application/json
+Authorization : Bearer {{token}}
+
+{
+    "text": "Une nouvelle idée trop chouette"
+}
+
+### Actualiser une idée (après authentification)
+PUT http://{{host}}/api/ideas/{{idea_id}}
+Content-Type: application/json
+Authorization : Bearer {{token}}
+
+{
+    "text": "Une nouvelle idée vraiment trop super mega chouette"
+}
+
+
+### Supprimer une idée (après authentification)
+DELETE http://{{host}}/api/ideas/{{idea_id}}
+Content-Type: application/json
+Authorization : Bearer {{token}}
+
+
+### Récupérer les likes d'une idée
+GET http://{{host}}/api/ideas/{{idea_id}}/likes
+Content-Type: application/json
+
+
+### Récupérer les commentaires d'une idée
+GET http://{{host}}/api/ideas/{{idea_id}}/comments
+Content-Type: application/json
+
