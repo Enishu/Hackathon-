@@ -9,7 +9,7 @@ import * as CommentModel from '../models/Comments.js';
 export const getAllIdeas = async (req, res) => {
   try {
     // Parametres optionnels d'Herve : order, limit, offset
-    const { order, limit, offset } = req.query;
+    const { order, limit, offset, category_ids } = req.query;
     
     // Validation des parametres
     const data = {};
@@ -22,6 +22,7 @@ export const getAllIdeas = async (req, res) => {
     if (offset && parseInt(offset) >= 0) {
       data.offset = parseInt(offset);
     }
+    if (category_ids) data.categoryIds=category_ids
     
     // Utilise le modele SQL avec les nouvelles options
     const ideas = await IdeaModel.getAll(data);
