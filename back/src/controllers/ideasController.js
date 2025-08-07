@@ -4,6 +4,7 @@ import * as CategoryModel from '../models/Categories.js';
 import * as IdeaCategoryModel from '../models/IdeaCategory.js';
 import * as LikeModel from '../models/Likes.js';
 import * as CommentModel from '../models/Comments.js';
+import pool from '../config/database.js';
 
 // Recuperer toutes les idees avec pagination et tri
 export const getAllIdeas = async (req, res) => {
@@ -29,6 +30,20 @@ export const getAllIdeas = async (req, res) => {
     // Enrichir chaque idée avec les compteurs de likes et commentaires
     const enrichedIdeas = await Promise.all(
       ideas.map(async (idea) => {
+        // Récupérer le nom de l'auteur
+        let author = 'Utilisateur inconnu';
+        try {
+          const [userRows] = await pool.query(
+            "SELECT username FROM users WHERE id = ?", 
+            [idea.user_id]
+          );
+          if (userRows.length > 0) {
+            author = userRows[0].username;
+          }
+        } catch (error) {
+          console.warn(`Erreur lors de la récupération de l'auteur pour l'idée ${idea.id}:`, error);
+        }
+
         // Récupérer le nombre de likes (avec gestion d'erreur)
         let likesCount = 0;
         try {
@@ -48,6 +63,7 @@ export const getAllIdeas = async (req, res) => {
         
         return {
           ...idea,
+          author,
           likesCount,
           commentsCount
         };
