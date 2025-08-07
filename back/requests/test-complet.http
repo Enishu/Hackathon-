@@ -1,0 +1,223 @@
+# Tests API - Scénario complet
+# IMPORTANT: Exécuter dans l'ordre pour que les tests s'enchaînent logiquement
+
+### Variables globales (remplace par tes vraies valeurs après chaque étape)
+@baseUrl = http://localhost:3002/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...  # À récupérer après login
+@userId = 1  # À récupérer après register
+@ideaId = 1  # À récupérer après création d'idée
+@commentId = 1  # À récupérer après création de commentaire
+
+### 1. AUTHENTIFICATION
+
+### 1.1 Créer un utilisateur
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "username": "testuser",
+  "password": "motdepasse123"
+}
+
+###
+
+### 1.2 Se connecter
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "motdepasse123"
+}
+
+###
+
+### 2. CRÉATION D'IDÉES
+
+### 2.1 Créer une première idée
+POST {{baseUrl}}/ideas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Une application pour organiser des hackathons en ligne"
+}
+
+###
+
+### 2.2 Créer une deuxième idée
+POST {{baseUrl}}/ideas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Un bot Discord pour aider les développeurs à debugger"
+}
+
+###
+
+### 3. RÉCUPÉRATION D'IDÉES
+
+### 3.1 Récupérer toutes les idées
+GET {{baseUrl}}/ideas
+
+###
+
+### 3.2 Récupérer une idée spécifique
+GET {{baseUrl}}/ideas/{{ideaId}}
+
+###
+
+### 3.3 Récupérer avec pagination
+GET {{baseUrl}}/ideas?limit=5&offset=0&order=DESC
+
+###
+
+### 4. LIKES
+
+### 4.1 Voir le nombre de likes d'une idée
+GET {{baseUrl}}/ideas/{{ideaId}}/likes
+
+###
+
+### 4.2 Liker une idée
+POST {{baseUrl}}/ideas/{{ideaId}}/likes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+### 4.3 Vérifier que le like a été ajouté
+GET {{baseUrl}}/ideas/{{ideaId}}/likes
+
+###
+
+### 4.4 Unliker l'idée
+DELETE {{baseUrl}}/ideas/{{ideaId}}/likes
+Authorization: Bearer {{token}}
+
+###
+
+### 5. COMMENTAIRES
+
+### 5.1 Voir les commentaires d'une idée
+GET {{baseUrl}}/ideas/{{ideaId}}/comments
+
+###
+
+### 5.2 Ajouter un commentaire
+POST {{baseUrl}}/ideas/{{ideaId}}/comments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Excellente idée ! J'aimerais participer au développement."
+}
+
+###
+
+### 5.3 Ajouter un second commentaire
+POST {{baseUrl}}/ideas/{{ideaId}}/comments
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Quelles technologies envisages-tu d'utiliser ?"
+}
+
+###
+
+### 5.4 Modifier un commentaire
+PUT {{baseUrl}}/ideas/{{ideaId}}/comments/{{commentId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Super idée ! J'aimerais vraiment participer au développement."
+}
+
+###
+
+### 5.5 Supprimer un commentaire
+DELETE {{baseUrl}}/ideas/{{ideaId}}/comments/{{commentId}}
+Authorization: Bearer {{token}}
+
+###
+
+### 6. MODIFICATION D'IDÉES
+
+### 6.1 Modifier une idée
+PUT {{baseUrl}}/ideas/{{ideaId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "text": "Une plateforme complète pour organiser et gérer des hackathons en ligne avec outils collaboratifs"
+}
+
+###
+
+### 7. CATÉGORIES
+
+### 7.1 Récupérer toutes les catégories
+GET {{baseUrl}}/categories
+
+###
+
+### 7.2 Créer une catégorie (si autorisé)
+POST {{baseUrl}}/categories
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "Développement Web",
+  "description": "Projets liés au développement d'applications web"
+}
+
+###
+
+### 8. TESTS D'ERREURS
+
+### 8.1 Tentative d'accès sans token
+POST {{baseUrl}}/ideas
+Content-Type: application/json
+
+{
+  "text": "Cette requête devrait échouer"
+}
+
+###
+
+### 8.2 Token invalide
+POST {{baseUrl}}/ideas
+Content-Type: application/json
+Authorization: Bearer token_invalide
+
+{
+  "text": "Cette requête devrait aussi échouer"
+}
+
+###
+
+### 8.3 Données manquantes
+POST {{baseUrl}}/ideas
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{}
+
+###
+
+### 8.4 ID inexistant
+GET {{baseUrl}}/ideas/99999
+
+###
+
+### 9. NETTOYAGE
+
+### 9.1 Supprimer l'idée créée
+DELETE {{baseUrl}}/ideas/{{ideaId}}
+Authorization: Bearer {{token}}
+
+###

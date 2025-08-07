@@ -1,0 +1,154 @@
+### Tests complets API - Boîte à Idées
+### Base URL
+@baseURL = http://localhost:3000/api
+
+### Variables
+@email = test@example.com
+@password = motdepasse123
+@token = 
+
+############################################
+### 1. AUTHENTIFICATION
+############################################
+
+### 1.1 Créer un utilisateur
+POST {{baseURL}}/auth/register
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}",
+    "confirmPassword": "{{password}}"
+}
+
+### 1.2 Connexion utilisateur
+POST {{baseURL}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "{{email}}",
+    "password": "{{password}}"
+}
+
+### 1.3 Vérifier email (simulé)
+GET {{baseURL}}/auth/verify/TOKEN_EMAIL_EXAMPLE
+
+############################################
+### 2. GESTION DES IDÉES  
+############################################
+
+### 2.1 Récupérer toutes les idées (PUBLIC)
+GET {{baseURL}}/ideas
+
+### 2.2 Récupérer toutes les idées avec pagination
+GET {{baseURL}}/ideas?limit=5&offset=0&order=DESC
+
+### 2.3 Créer une nouvelle idée (PROTÉGÉ)
+POST {{baseURL}}/ideas
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+    "text": "Une super idée pour améliorer l'application !"
+}
+
+### 2.4 Récupérer une idée par ID
+GET {{baseURL}}/ideas/1
+
+### 2.5 Modifier une idée (PROTÉGÉ)
+PUT {{baseURL}}/ideas/1
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+    "text": "Idée modifiée avec plus de détails"
+}
+
+### 2.6 Supprimer une idée (PROTÉGÉ)
+DELETE {{baseURL}}/ideas/1
+Authorization: Bearer YOUR_TOKEN_HERE
+
+############################################
+### 3. LIKES DES IDÉES
+############################################
+
+### 3.1 Récupérer le nombre de likes d'une idée
+GET {{baseURL}}/ideas/1/likes
+
+### 3.2 Liker une idée (PROTÉGÉ)
+POST {{baseURL}}/ideas/1/likes
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+### 3.3 Unliker une idée (PROTÉGÉ)
+DELETE {{baseURL}}/ideas/1/likes
+Authorization: Bearer YOUR_TOKEN_HERE
+
+############################################
+### 4. COMMENTAIRES DES IDÉES
+############################################
+
+### 4.1 Récupérer tous les commentaires d'une idée
+GET {{baseURL}}/ideas/1/comments
+
+### 4.2 Ajouter un commentaire à une idée (PROTÉGÉ)
+POST {{baseURL}}/ideas/1/comments
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+    "text": "Excellent commentaire sur cette idée !"
+}
+
+### 4.3 Modifier un commentaire (PROTÉGÉ)
+PUT {{baseURL}}/ideas/1/comments/1
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+    "text": "Commentaire modifié avec plus de précisions"
+}
+
+### 4.4 Supprimer un commentaire (PROTÉGÉ)
+DELETE {{baseURL}}/ideas/1/comments/1
+Authorization: Bearer YOUR_TOKEN_HERE
+
+############################################
+### 5. CATÉGORIES
+############################################
+
+### 5.1 Récupérer toutes les catégories
+GET {{baseURL}}/categories
+
+### 5.2 Récupérer une catégorie par ID
+GET {{baseURL}}/categories/1
+
+### 5.3 Créer une nouvelle catégorie (PROTÉGÉ)
+POST {{baseURL}}/categories
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+    "name": "Innovation",
+    "description": "Idées innovantes et créatives"
+}
+
+############################################
+### 6. TESTS AVANCÉS
+############################################
+
+### 6.1 Récupérer les idées d'un utilisateur
+GET {{baseURL}}/ideas/user/1
+
+### 6.2 Test avec token invalide
+GET {{baseURL}}/ideas
+Authorization: Bearer TOKEN_INVALIDE
+
+### 6.3 Test création idée sans texte
+POST {{baseURL}}/ideas
+Content-Type: application/json
+Authorization: Bearer YOUR_TOKEN_HERE
+
+{
+    "text": ""
+}

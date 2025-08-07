@@ -1,5 +1,5 @@
 import express from 'express';
-import { verifyAuthToken } from '../middlewares/verifyAuthToken.js';
+import auth from '../middlewares/verifyAuthToken.js';
 import { 
   getAllIdeas, 
   getIdeaById,
@@ -23,13 +23,13 @@ router.get('/', getAllIdeas);
 router.get('/:id', getIdeaById);
 
 // POST /api/ideas - Creer une nouvelle idee (PROTEGE)
-router.post('/', verifyAuthToken, createIdeas);
+router.post('/', auth, createIdeas);
 
 // PUT /api/ideas/:id - Modifier une idee (PROTEGE)
-router.put('/:id', verifyAuthToken, updateIdea);
+router.put('/:id', auth, updateIdea);
 
 // DELETE /api/ideas/:id - Supprimer une idee (PROTEGE)
-router.delete('/:id', verifyAuthToken, deleteIdea);
+router.delete('/:id', auth, deleteIdea);
 
 // GET /api/ideas/user/:userId - Recuperer les idees d'un utilisateur (PUBLIC)
 router.get('/user/:userId', getIdeasByUser);
