@@ -1,9 +1,17 @@
 
+
+### Variables globales (remplace par tes vraies valeurs après chaque étape)
+@baseUrl = http://localhost:3002/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJoZzY0b2ZmK2JvaXRlYWlkZWUwMUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc1NDU2NTU1MCwiZXhwIjoxNzU0NjUxOTUwfQ.Xpn8bu186R0_lea3HwpBjUHTa1e0aK3Ygk2RYT5lqNw
+@userId = 1  # À récupérer après register
+@ideaId = 61
+@commentId = 1  # À récupérer après création de commentaire
+
 ### Get Idees
-GET http://localhost:3002/api/ideas
+GET {{baseUrl}}/ideas
 
 ### Connexion utilisateur
-POST http://localhost:3002/api/auth/login
+POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
@@ -11,47 +19,34 @@ Content-Type: application/json
   "password": "superMotDePasse"
 }
 
-
-
-
-
-
-### Créer un utilisateur (suivi de l'envoi d'un email avec token)
-POST http://localhost:3002/api/auth/register
+### 2.1 Créer une première idée
+POST {{baseUrl}}/ideas
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "username": "wtf64",
-  "email": "hg64off+boiteaidee01@gmail.com",
-  "password": "superMotDePasse",
-  "passwordConfirm": "superMotDePasse"
+  "text": "Une application pour organiser des hackathons en ligne"
 }
 
-
-### Vérifier l'email (à gérer côté front normalement)
-GET http://localhost:3002/api/auth/verify-email/:token
+### 4.2 Liker une idée
+POST {{baseUrl}}/ideas/{{ideaId}}/likes
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
+### 4.4 Unliker l'idée
+DELETE {{baseUrl}}/ideas/{{ideaId}}/likes
+Authorization: Bearer {{token}}
 
-### Mot de passe oublié (suivi de l'envoi d'un email avec token)
-POST http://localhost:3002/api/auth/forgot-password
+### 5.1 Voir les commentaires d'une idée
+GET {{baseUrl}}/ideas/{{ideaId}}/comments
+
+###
+
+### 5.2 Ajouter un commentaire
+POST {{baseUrl}}/ideas/{{ideaId}}/comments
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "email": "hg64off+boiteaidee01@gmail.com"
-}
-
-
-### Lien de confirmation avec token pour autoriser le reset (à gérer côté front)
-GET http://localhost:3002/api/auth/reset-password/:token
-Content-Type: application/json
-
-
-### Réinitialiser le mot de passe avec token
-POST http://localhost:3002/api/auth/reset-password/:token
-Content-Type: application/json
-
-{
-  "password": "nouveauMotDePasse",
-  "passwordConfirm": "nouveauMotDePasse"
+  "text": "Excellente idée ! J'aimerais participer au développement."
 }

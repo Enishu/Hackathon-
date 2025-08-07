@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { useState, useEffect } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { Button } from "@/components/ui/button"
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
+import useStore from './hooks/store';
 
 // const useStore = create((set) => ({
 //     bears: 0,
@@ -17,21 +16,6 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 // }))
 
 
-export const useStore = create()(
-    persist(
-        (set, get) => ({
-            isLogin: false,
-            loginToken: "",
-            username: "",
-            darkMode: true,
-            toggleDarkMode: () => set({ darkMode: !get().darkMode }),
-        }),
-        {
-            name: 'food-storage', // name of the item in the storage (must be unique)
-            storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
-        },
-    ),
-)
 
 export default () => {
 
@@ -62,8 +46,8 @@ export default () => {
     //     if (isDarkEnabled) toggleDarkMode()
     // }, []);
 
-    const bears = useStore((state) => state.bears)
-    const addABear = useStore((state) => state.addABear)
+    const isLogin = useStore((state) => state.isLogin)
+    const username = useStore((state) => state.username)
 
     return (
         <div className="py-10 h-full">
@@ -87,7 +71,7 @@ export default () => {
                             </button>
                         </PopUpLogin>
                         <Badge className="bg-stone-100 shadow-lg text-stone-700
-                    dark:bg-slate-700 dark:text-stone-200">Se connecter</Badge>
+                    dark:bg-slate-700 dark:text-stone-200">{isLogin ? username :"Se connecter"}</Badge>
                     </div>
                     <div className="grid grid-cols-1 justify-items-center gap-1">
                         <button className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full shadow-lg
