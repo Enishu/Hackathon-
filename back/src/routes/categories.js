@@ -8,13 +8,13 @@ import {
 
 const router = express.Router();
 
-// GET /api/categories - Récupérer toutes les catégories (PUBLIC)
+// GET /api/categories - Recuperer toutes les categories (PUBLIC)
 router.get('/', getAllCategories);
 
-// GET /api/categories/:id - Récupérer une catégorie par ID (PUBLIC)
+// GET /api/categories/:id - Recuperer une categorie par ID (PUBLIC)
 router.get('/:id', getCategoryById);
 
-// POST /api/categories - Créer une nouvelle catégorie (PROTÉGÉ - ADMIN)
+// POST /api/categories - Creer une nouvelle categorie (PROTEGE - ADMIN)
 router.post('/', auth, createCategory);
 
 export default router;

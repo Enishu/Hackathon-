@@ -1,35 +1,33 @@
-// Logique de gestion des idées 
+// Logique de gestion des idees
 import * as IdeaModel from '../models/Ideas.js';
 
-// Récupérer toutes les idées
+// Recuperer toutes les idees
 export const getAllIdeas = async (req, res) => {
   try {
-    // ✅ Utilise le modèle SQL de votre collègue
+    // Utilise le modèle SQL de votre collègue
     const ideas = await IdeaModel.getAll();
     
     res.status(200).json({
       success: true,
-      message: 'Idées récupérées avec succès',
+      message: 'Idees recuperees avec succes',
       data: ideas
     });
   } catch (error) {
-    console.error('Erreur lors de la récupération des idées:', error);
+    console.error('Erreur lors de la recuperation des idees:', error);
     res.status(500).json({
       success: false,
-      message: 'Erreur serveur lors de la récupération des idées'
+      message: 'Erreur serveur lors de la recuperation des idees'
     });
   }
 };
 
-// Récupérer une idée par ID
+// Recuperer une idee par ID
 export const getIdeaById = async (req, res) => {
   try {
     const { id } = req.params;
     
-    // ✅ On va créer cette fonction car elle n'existe pas dans le modèle
-    // Pour l'instant on utilise getAll et on filtre (pas optimal mais fonctionnel)
-    const allIdeas = await IdeaModel.getAll();
-    const idea = allIdeas.find(idea => idea.id == id);
+    // Utilise la nouvelle fonction findById de votre collègue !
+    const idea = await IdeaModel.findById(id);
     
     if (!idea) {
       return res.status(404).json({
@@ -40,24 +38,24 @@ export const getIdeaById = async (req, res) => {
     
     res.status(200).json({
       success: true,
-      message: 'Idée récupérée avec succès',
+      message: 'Idee recuperee avec succes',
       data: idea
     });
   } catch (error) {
-    console.error('Erreur lors de la récupération de l\'idée:', error);
+    console.error('Erreur lors de la recuperation de l\'idee:', error);
     res.status(500).json({
       success: false,
-      message: 'Erreur serveur lors de la récupération de l\'idée'
+      message: 'Erreur serveur lors de la recuperation de l\'idee'
     });
   }
 };
 
-// Créer une nouvelle idée 
+// Creer une nouvelle idee 
 export const createIdeas = async (req, res) => {
   try {
-    const { text, userId } = req.body; // ✅ Correspond au modèle SQL (text, userId)
+    const { text, userId } = req.body; // Correspond au modèle SQL (text, userId)
     
-    // ✅ Validation simple
+    // Validation simple
     if (!text || !userId) {
       return res.status(400).json({
         success: false,
@@ -65,30 +63,30 @@ export const createIdeas = async (req, res) => {
       });
     }
     
-    // ✅ Utilise le modèle SQL de votre collègue
+    // Utilise le modèle SQL de votre collègue
     const result = await IdeaModel.create({ text, userId });
     
     res.status(201).json({
       success: true,
-      message: 'Idée créée avec succès',
+      message: 'Idée créée avec succes',
       data: { id: result.insertId, text, userId }
     });
   } catch (error) {
-    console.error('Erreur lors de la création de l\'idée:', error);
+    console.error('Erreur lors de la création de l\'idee:', error);
     res.status(500).json({
       success: false,
-      message: 'Erreur serveur lors de la création de l\'idée'
+      message: 'Erreur serveur lors de la création de l\'idee'
     });
   }
 };
 
-// Modifier une idée
+// Modifier une idee
 export const updateIdea = async (req, res) => {
   try {
     const { id } = req.params;
-    const { text, userId } = req.body; // ✅ Correspond au modèle SQL
+    const { text, userId } = req.body; // Correspond au modèle SQL
 
-    // ✅ Validation
+    // Validation
     if (!text || !userId) {
       return res.status(400).json({
         success: false,
@@ -96,7 +94,7 @@ export const updateIdea = async (req, res) => {
       });
     }
 
-    // ✅ Utilise le modèle SQL de votre collègue
+    // Utilise le modèle SQL de votre collègue
     const result = await IdeaModel.update({ text, userId, id });
     
     if (result.affectedRows === 0) {
@@ -108,24 +106,24 @@ export const updateIdea = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: 'Idée modifiée avec succès',
+      message: 'Idée modifiée avec succes',
       data: { id, text, userId }
     });
   } catch (error) {
-    console.error('Erreur lors de la modification de l\'idée:', error);
+    console.error('Erreur lors de la modification de l\'idee:', error);
     res.status(500).json({
       success: false,
-      message: 'Erreur serveur lors de la modification de l\'idée'
+      message: 'Erreur serveur lors de la modification de l\'idee'
     });
   }
 };
 
-// Supprimer une idée
+// Supprimer une idee
 export const deleteIdea = async (req, res) => {
   try {
     const { id } = req.params;
     
-    // ✅ Utilise le modèle SQL de votre collègue
+    // Utilise le modèle SQL de votre collègue
     const result = await IdeaModel.remove(id);
     
     if (result.affectedRows === 0) {
@@ -137,35 +135,35 @@ export const deleteIdea = async (req, res) => {
     
     res.status(200).json({
       success: true,
-      message: 'Idée supprimée avec succès'
+      message: 'Idée supprimée avec succes'
     });
   } catch (error) {
-    console.error('Erreur lors de la suppression de l\'idée:', error);
+    console.error('Erreur lors de la suppression de l\'idee:', error);
     res.status(500).json({
       success: false,
-      message: 'Erreur serveur lors de la suppression de l\'idée'
+      message: 'Erreur serveur lors de la suppression de l\'idee'
     });
   }
 };
 
-// ✅ BONUS: Récupérer les idées d'un utilisateur spécifique
+// Recuperer les idees d'un utilisateur spécifique
 export const getIdeasByUser = async (req, res) => {
   try {
     const { userId } = req.params;
     
-    // ✅ Utilise la fonction findByUserId du modèle SQL
+    // Utilise la fonction findByUserId du modèle SQL
     const ideas = await IdeaModel.findByUserId(userId);
     
     res.status(200).json({
       success: true,
-      message: 'Idées de l\'utilisateur récupérées avec succès',
+      message: 'Idées de l\'utilisateur recuperées avec succes',
       data: ideas
     });
   } catch (error) {
-    console.error('Erreur lors de la récupération des idées utilisateur:', error);
+    console.error('Erreur lors de la recuperation des idees utilisateur:', error);
     res.status(500).json({
       success: false,
-      message: 'Erreur serveur lors de la récupération des idées utilisateur'
+      message: 'Erreur serveur lors de la recuperation des idees utilisateur'
     });
   }
 };

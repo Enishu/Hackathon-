@@ -1,5 +1,8 @@
 import pool from "../config/database.js";
 
+/** * Modèle pour les idées
+ * Permet de gérer les opérations CRUD sur les idées dans la base de données
+ */
 export async function create(data) {
     const { text, userId } = data;
     const [result] = await pool.query(
