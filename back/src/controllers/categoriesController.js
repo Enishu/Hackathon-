@@ -3,7 +3,7 @@ import * as CategoryModel from '../models/Categories.js';
 
 export const getAllCategories = async (req, res) => {
   try {
-    // Utilise le modèle SQL Categories
+    // Utilise le modele Categories
     const categories = await CategoryModel.getAll();
     
     res.status(200).json({
@@ -51,7 +51,7 @@ export const getCategoryById = async (req, res) => {
 
 export const createCategory = async (req, res) => {
   try {
-    const { name, iconUrl } = req.body; // iconUrl comme dans le modèle d'Hervé
+    const { name, iconUrl } = req.body; // iconUrl comme dans le modele
     
     // Validation simple
     if (!name || !iconUrl) {
@@ -61,7 +61,7 @@ export const createCategory = async (req, res) => {
       });
     }
     
-    // D'après le modèle Categories d'Hervé
+    // D'apres le modele Categories
     const result = await CategoryModel.create({ name, iconUrl });
     
     res.status(201).json({

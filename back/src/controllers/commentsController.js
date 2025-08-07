@@ -24,12 +24,12 @@ export const getAllComments = async (req, res) => {
 
 export const getCommentById = async (req, res) => {
   try {
-    // Le modèle d'Hervé n'a pas de findById, voir avec les autres si nécessaire
+    // Le modele n'a pas de findById, voir avec les autres si necessaire
     // pour l'instant on peut utiliser findByIdeaId ou findByUserId selon le besoin
     
     res.status(200).json({
       success: true,
-      message: 'Fonction getCommentById pas encore implémentée - voir avec Hervé pour ajouter findById au modèle',
+      message: 'Fonction getCommentById pas encore implementee - voir avec l\'equipe pour ajouter findById au modele',
       info: 'Utilisez GET /comments?ideaId=X pour recuperer les commentaires d\'une idee'
     });
   } catch (error) {
@@ -44,7 +44,7 @@ export const getCommentById = async (req, res) => {
 export const createComment = async (req, res) => {
   try {
     const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
-    const { text } = req.body; // text au lieu de content (modèle d'Hervé)
+    const { text } = req.body; // text au lieu de content
     const userId = req.user.id; // Recuperé du token JWT
     
     // Validation
@@ -55,7 +55,7 @@ export const createComment = async (req, res) => {
       });
     }
     
-    // Utilise le modèle Comments d'Hervé
+    // Utilise le modele Comments
     const result = await CommentModel.create({ text, ideaId, userId });
     
     res.status(201).json({
@@ -86,7 +86,7 @@ export const updateComment = async (req, res) => {
       });
     }
     
-    // Utilise le modèle Comments d'Hervé
+    // Utilise le modele Comments
     const result = await CommentModel.update({ text, ideaId, userId, id: commentId });
     
     if (result.affectedRows === 0) {
@@ -116,7 +116,7 @@ export const deleteComment = async (req, res) => {
     // Note: userId pourrait servir pour vérifier que l'utilisateur supprime son propre commentaire
     // voir avec les autres si on veut ajouter cette sécurité
     
-    // Utilise le modèle Comments d'Hervé
+    // Utilise le modele Comments
     const result = await CommentModel.remove(commentId);
     
     if (result.affectedRows === 0) {
