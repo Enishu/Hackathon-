@@ -10,7 +10,6 @@ import {
     DialogOverlay,
 } from "@/components/ui/dialog"
 
-
 export default ({ children, postId }) => {
     return <>
         <Dialog>
