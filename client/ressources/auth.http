@@ -1,0 +1,57 @@
+
+### Get Idees
+GET http://localhost:3002/api/ideas
+
+### Connexion utilisateur
+POST http://localhost:3002/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "hg64off+boiteaidee01@gmail.com",
+  "password": "superMotDePasse"
+}
+
+
+
+
+
+
+### Créer un utilisateur (suivi de l'envoi d'un email avec token)
+POST http://localhost:3002/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "wtf64",
+  "email": "hg64off+boiteaidee01@gmail.com",
+  "password": "superMotDePasse",
+  "passwordConfirm": "superMotDePasse"
+}
+
+
+### Vérifier l'email (à gérer côté front normalement)
+GET http://localhost:3002/api/auth/verify-email/:token
+Content-Type: application/json
+
+
+### Mot de passe oublié (suivi de l'envoi d'un email avec token)
+POST http://localhost:3002/api/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "hg64off+boiteaidee01@gmail.com"
+}
+
+
+### Lien de confirmation avec token pour autoriser le reset (à gérer côté front)
+GET http://localhost:3002/api/auth/reset-password/:token
+Content-Type: application/json
+
+
+### Réinitialiser le mot de passe avec token
+POST http://localhost:3002/api/auth/reset-password/:token
+Content-Type: application/json
+
+{
+  "password": "nouveauMotDePasse",
+  "passwordConfirm": "nouveauMotDePasse"
+}

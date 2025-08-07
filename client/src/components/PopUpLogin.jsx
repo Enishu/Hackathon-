@@ -13,16 +13,38 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import PopUpRegister from "./PopUpRegister"
 import { useState } from "react"
+import { request } from "../hooks/request"
+
 
 
 export default ({ children }) => {
 
-    const [mail, setMail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("hg64off+boiteaidee01@gmail.com");
+    const [password, setPassword] = useState("superMotDePasse");
+
+    const [loading, setLoading] = useState(true)
+    const [data, setData] = useState([])
+    const [error, setError] = useState(null)
+
+
+
     const sendLogin = e => {
         e.preventDefault();
-        console.log({ mail, password })
+        console.log({ email, password })
+
+        setLoading(true)
+        request({ action: "auth", params: { email, password } }).then(res => {
+            console.log("RES", res)
+            setLoading(false)
+            if (!res.error) {
+                setData(res.data)
+            } else {
+                setError(true)
+            }
+        })
     }
+
+
 
     return <>
         <Dialog>
@@ -41,13 +63,13 @@ export default ({ children }) => {
                 <form onSubmit={sendLogin}>
                     <div className="grid gap-4">
                         <div className="grid gap-3">
-                            <Label htmlFor="mail">Mail</Label>
+                            <Label htmlFor="email">Mail</Label>
                             <Input
-                                id="mail"
-                                name="mail"
+                                id="email"
+                                name="email"
                                 type="email"
-                                value={mail}
-                                onChange={(e) => setMail(e.target.value)}
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 required />
                         </div>
                         <div className="grid gap-3">

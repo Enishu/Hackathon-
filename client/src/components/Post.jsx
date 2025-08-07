@@ -2,12 +2,15 @@ import { Badge } from "@/components/ui/badge"
 import PopUpComment from "./PopUpComment"
 import PopUpConfirmDelete from "./PopUpConfirmDelete"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 export default ({ text, postId, likesCount, commentsCount, enableSkeleton = false, author = "" }) => {
 
-    let liked = author == "Jean P."
+    const [liked, setLiked] = useState(false)
+    useEffect(() => {
+        setLiked(author == "Jean P.")
+    }, [author]);
 
     return (<>{enableSkeleton ?
         <Skeleton className="relative p-3 rounded-2xl shadow-lg hover:scale-105 transition
@@ -30,7 +33,7 @@ export default ({ text, postId, likesCount, commentsCount, enableSkeleton = fals
                     <BtnCircle src="./src/icons/comments.svg" badge={true} badgeCount={commentsCount} />
                 </PopUpComment>
 
-                <BtnCircle src="./src/icons/thumb-up.svg" badge={true} badgeCount={likesCount} activated={liked}/>
+                <BtnCircle src="./src/icons/thumb-up.svg" badge={true} badgeCount={likesCount} activated={liked} />
 
                 <PopUpConfirmDelete>
                     <BtnCircle src="./src/icons/trashcan.svg" />
