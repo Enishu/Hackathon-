@@ -1,5 +1,5 @@
-@hostname = localhost
-@port = 3000
+@hostname = hackathon-backend-3688.onrender.com
+@port = 80
 @host = {{hostname}}:{{port}}
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiZW1haWwiOiJoZzY0b2ZmK2JvaXRlYWlkZWUwMUBnbWFpbC5jb20iLCJyb2xlIjoidXNlciIsImlhdCI6MTc1NDU2ODQ5NCwiZXhwIjoxNzU0NTkwMDk0fQ.YaANlh-f3T4yUCp91PM_Qs8BA9Z-4J_5XwgO-nTcEYY
 @idea_id = 52
