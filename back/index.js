@@ -5,6 +5,7 @@ import applySecurityMiddlewares from "./src/middlewares/security.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import ideasRoutes from './src/routes/ideas.js';
 import categoriesRoutes from './src/routes/categories.js';
+import ideaCategoriesRoutes from './src/routes/ideaCategories.js';
 
 // Création d'une instance Express
 const app = express();
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes); // Authentification
 app.use('/api/ideas', ideasRoutes); // Routes principales des idées qui incluent les sous-routes comments et likes
 app.use('/api/categories', categoriesRoutes); // Routes de gestion des catégories
+app.use('/api/idea-categories', ideaCategoriesRoutes); // Routes pour associer idées et catégories
 
 // Lancement du serveur
 app.listen(env.SERVER_PORT, () => {

@@ -1,0 +1,38 @@
+### Connexion pour récupérer le token
+POST http://localhost:3002/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "hg64off+boiteaidee01@gmail.com",
+  "password": "superMotDePasse"
+}
+
+### Récupérer toutes les catégories disponibles
+GET http://localhost:3002/api/categories
+
+### Poster une nouvelle idée (remplacer TOKEN_ICI par le token reçu à la connexion)
+POST http://localhost:3002/api/ideas
+Content-Type: application/json
+Authorization: Bearer TOKEN_ICI
+
+{
+  "text": "Clavier avec touches au format dyslexique et couleurs adaptées",
+  "userId": 6
+}
+
+### Vérifier que l'idée a bien été créée
+GET http://localhost:3002/api/ideas
+
+### TESTS DES NOUVEAUX PARAMÈTRES D'HERVÉ
+
+### Récupérer les 5 dernières idées (ordre DESC, limit=5)
+GET http://localhost:3002/api/ideas?order=DESC&limit=5
+
+### Récupérer les 5 idées les plus anciennes (ordre ASC, limit=5)
+GET http://localhost:3002/api/ideas?order=ASC&limit=5
+
+### Récupérer 10 idées à partir de la 6ème (pagination : offset=5, limit=10)
+GET http://localhost:3002/api/ideas?limit=10&offset=5
+
+### Récupérer toutes les idées par ordre chronologique
+GET http://localhost:3002/api/ideas?order=ASC

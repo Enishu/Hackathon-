@@ -6,24 +6,33 @@ import * as IdeaModel from '../models/Ideas.js';
 // Recuperer toutes les idees avec pagination et tri
 export const getAllIdeas = async (req, res) => {
   try {
-    // Utilise le modele SQL
-    const ideas = await IdeaModel.getAll();
+    // Paramètres optionnels d'Hervé : order, limit, offset
     const { order, limit, offset } = req.query;
     
-    // Prepare les donnees pour le modele
+    // Validation des paramètres
     const data = {};
-    if (order) data.order = order;
-    if (limit) data.limit = parseInt(limit);
-    if (offset) data.offset = parseInt(offset);
+    if (order && ['ASC', 'DESC'].includes(order.toUpperCase())) {
+      data.order = order.toUpperCase();
+    }
+    if (limit && parseInt(limit) > 0) {
+      data.limit = parseInt(limit);
+    }
+    if (offset && parseInt(offset) >= 0) {
+      data.offset = parseInt(offset);
+    }
     
-    // Utilise le modele SQL de votre collegue avec les nouvelles options
+    // Utilise le modèle SQL d'Hervé avec les nouveaux paramètres
     const ideas = await IdeaModel.getAll(data);
     
     res.status(200).json({
       success: true,
       message: 'Idees recuperees avec succes',
-      message: 'Idees recuperees avec succes',
-      data: ideas
+      data: ideas,
+      pagination: {
+        order: data.order || 'DESC',
+        limit: data.limit || 'all',
+        offset: data.offset || 0
+      }
     });
   } catch (error) {
     console.error('Erreur lors de la recuperation des idees:', error);
@@ -73,15 +82,14 @@ export const getIdeaById = async (req, res) => {
 // Creer une nouvelle idee 
 export const createIdeas = async (req, res) => {
   try {
-    const { text, userId } = req.body; // Correspond au modele (text, userId)
+    const { text } = req.body; // Seulement le texte de l'idée
+    const userId = req.user.id; // Recuperé du token JWT
     
-    // Validation simple
-    if (!text || !userId) {
     // Validation simple
     if (!text) {
       return res.status(400).json({
         success: false,
-        message: 'Le texte est requis'
+        message: 'Le texte de l\'idée est requis'
       });
     }
     
@@ -110,15 +118,14 @@ export const createIdeas = async (req, res) => {
 export const updateIdea = async (req, res) => {
   try {
     const { id } = req.params;
-    const { text, userId } = req.body; // Correspond au modele
+    const { text } = req.body; // Seulement le texte de l'idée
+    const userId = req.user.id; // Recuperé du token JWT
 
-    // Validation
-    if (!text || !userId) {
     // Validation
     if (!text) {
       return res.status(400).json({
         success: false,
-        message: 'Le texte est requis'
+        message: 'Le texte de l\'idée est requis'
       });
     }
 
