@@ -13,18 +13,18 @@ export async function create(data) {
 }
 
 export async function getAll(data) {
-    const { order, limit, offset } = data;
-    const query_elements = [`SELECT * FROM ideas`];
+    const { order = "DESC", limit, offset } = data || {};
+    const query_elements = [
+        `SELECT * FROM ideas ORDER BY created_at ${
+            ["ASC", "DESC"].includes(order) ? order : "DESC"
+        }`,
+    ];
     const params = [];
-    if (["ASC", "DESC"].includes(order)) {
-        query_elements.push(`ORDER BY created_at ?`);
-        params.push(order);
-    }
     if (limit > 0) {
         query_elements.push(`LIMIT ?`);
         params.push(limit);
     }
-    if (offset > 0) {
+    if (offset >= 0) {
         query_elements.push(`OFFSET ?`);
         params.push(offset);
     }
