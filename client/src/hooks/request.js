@@ -36,6 +36,21 @@ export function request({ action, params }) {
 
         if (action == "getPosts") {
             route = "/ideas "
+            if (params.filters.length) {
+                let filtersQuery = params.filters.map(filter => {
+                    if (filter == "education") return 1
+                    if (filter == "mobilite") return 2
+                    if (filter == "sante") return 3
+                    if (filter == "urbanisme") return 4
+                    if (filter == "autres") return 5
+                    if (filter == "cognitif") return 6
+                    if (filter == "visuel") return 7
+                    if (filter == "auditif") return 8
+                    if (filter == "moteur") return 9
+                    return 0
+                }).join(',')
+                route = "/ideas?category_ids=" + filtersQuery
+            }
             method = "GET"
         }
         if (action == "auth") {
@@ -59,6 +74,7 @@ export function request({ action, params }) {
             body = JSON.stringify(params)
         }
 
+        // const domain = "https://hackathon-backend-3688.onrender.com/api"
         const domain = "http://localhost:3002/api"
         const url = domain + route
 

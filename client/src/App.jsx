@@ -73,7 +73,7 @@ export default () => {
                             </button>
                         </PopUpLogin>
                         <Badge className="bg-stone-100 shadow-lg text-stone-700
-                    dark:bg-slate-700 dark:text-stone-200">{isLogin ? username :"Se connecter"}</Badge>
+                    dark:bg-slate-700 dark:text-stone-200">{isLogin ? username : "Se connecter"}</Badge>
                     </div>
                     <div className="grid grid-cols-1 justify-items-center gap-1">
                         <button className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full shadow-lg
@@ -174,6 +174,12 @@ export default () => {
                             },
                         }}
                     />
+
+                    {/* crédits */}
+                    {/* <div class="hidden xl:block fixed bottom-2 right-2 px-3 py-1 rounded text-sm
+                    text-stone-400 dark:text-stone-400">
+                        Par Hervé, Paulé, jeremiel, Jean-François
+                    </div> */}
 
                 </div>
 

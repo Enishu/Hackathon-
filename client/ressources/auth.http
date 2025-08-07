@@ -10,6 +10,15 @@
 ### Get Idees
 GET {{baseUrl}}/ideas
 
+### Récupérer toutes les idées (avec les options)
+GET {{baseUrl}}/ideas?order=DESC&limit=2&offset=2&category_ids=3,6
+Content-Type: application/json
+
+### Récupérer toutes les idées (avec les options)
+GET {{baseUrl}}/ideas?category_ids=3,6
+Content-Type: application/json
+
+
 ### Connexion utilisateur
 POST {{baseUrl}}/auth/login
 Content-Type: application/json
