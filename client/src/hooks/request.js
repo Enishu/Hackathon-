@@ -13,7 +13,7 @@ export function request({ action, params }) {
         //MOCK
         function mock(action) {
             if (action == "getPosts")
-                return({ loading: false, data: posts, error: null, params })
+                return ({ loading: false, data: posts, error: null, params })
             return false
         }
 
@@ -21,20 +21,33 @@ export function request({ action, params }) {
             return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve("wait");
-                }, 3000);
+                }, 0);
             });
         }
 
 
         //adaptateur
         let route = "/"
-        let reqType = "GET"
+        let method = "GET"
+        let headers = {}
+        let body = {}
+
         if (action == "getPosts") {
             route = "/"
-            reqType = "GET"
+            method = "GET"
+        }
+        if (action == "auth") {
+            route = "/auth/login"
+            method = "POST"
         }
 
-        const domain = "https://api.jeremiel.de"
+        if (method == "POST") {
+            headers = { 'Content-Type': 'application/json', }
+            body = JSON.stringify(params)
+            console.log(body)
+        }
+
+        const domain = "http://localhost:3002/api"
         const url = domain + route
 
         wait().then((wait) => {
@@ -47,12 +60,13 @@ export function request({ action, params }) {
                 let error = null
                 let loading = true
                 fetch(url, {
-                    headers: {
-                        'Accept': 'application/json; charset=UTF-8',
-                    }
+                    method,
+                    headers,
+                    body
                 }).then(r => r.json()).then(r2 => {
                     data = r2
-                    //if data container error: return error
+                    if (data.error)
+                        throw new Error(`Erreur du serveur : ${data.error}`);
                 }).catch((e) => {
                     error = e
                     toast.error(e.message)
@@ -63,7 +77,7 @@ export function request({ action, params }) {
             }
         });
 
-        
+
     });
 }
 

@@ -2,12 +2,15 @@ import { Badge } from "@/components/ui/badge"
 import PopUpComment from "./PopUpComment"
 import PopUpConfirmDelete from "./PopUpConfirmDelete"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 export default ({ text, postId, likesCount, commentsCount, enableSkeleton = false, author = "" }) => {
 
-    let liked = author == "Jean P."
+    const [liked, setLiked] = useState(false)
+    useEffect(() => {
+        setLiked(author == "Jean P.")
+    }, [author]);
 
     return (<>{enableSkeleton ?
         <Skeleton className="relative p-3 rounded-2xl shadow-lg hover:scale-105 transition
@@ -30,7 +33,7 @@ export default ({ text, postId, likesCount, commentsCount, enableSkeleton = fals
                     <BtnCircle src="./src/icons/comments.svg" badge={true} badgeCount={commentsCount} />
                 </PopUpComment>
 
-                <BtnCircle src="./src/icons/thumb-up.svg" badge={true} badgeCount={likesCount} activated={liked}/>
+                <BtnCircle src="./src/icons/thumb-up.svg" badge={true} badgeCount={likesCount} activated={liked} />
 
                 <PopUpConfirmDelete>
                     <BtnCircle src="./src/icons/trashcan.svg" />
@@ -43,7 +46,7 @@ export default ({ text, postId, likesCount, commentsCount, enableSkeleton = fals
 }
 function BtnCircle({ src, badge = false, badgeCount, activated = false, ...props }) {
     return (<>
-        <div {...props} className={`relative size-10 cursor-pointer rounded-full flex justify-center items-center shadow-lg ring-1
+        <button {...props} className={`relative size-10 cursor-pointer rounded-full flex justify-center items-center shadow-lg ring-1
             ${activated ? "bg-stone-300" : "bg-stone-100"} hover:bg-stone-200 ring-stone-200 
             ${activated ? "dark:bg-slate-500" : "dark:bg-slate-700"} dark:hover:bg-slate-600 dark:ring-slate-600`}>
             <img className="size-6 inline" src={src} alt="" />
@@ -54,6 +57,6 @@ function BtnCircle({ src, badge = false, badgeCount, activated = false, ...props
                     {badgeCount}
                 </Badge>
             }
-        </div>
+        </button>
     </>)
 }
