@@ -1,5 +1,7 @@
 // Logique de gestion des idees
 import * as IdeaModel from '../models/Ideas.js';
+import * as CategoryModel from '../models/Categories.js';
+import * as IdeaCategoryModel from '../models/IdeaCategory.js';
 
 // Recuperer toutes les idees avec pagination et tri
 export const getAllIdeas = async (req, res) => {
@@ -68,7 +70,7 @@ export const getIdeaById = async (req, res) => {
 // Creer une nouvelle idee 
 export const createIdeas = async (req, res) => {
   try {
-    const { text } = req.body; // Seul le text est necessaire dans le body
+    const { text, categories = [] } = req.body; // text et categories dans le body
     const userId = req.user.id; // L'utilisateur vient du token JWT
     
     // Validation simple
@@ -79,13 +81,42 @@ export const createIdeas = async (req, res) => {
       });
     }
     
-    // Utilise le modele SQL
-    const result = await IdeaModel.create({ text, userId });
+    // Validation des catégories (optionnel)
+    if (categories && !Array.isArray(categories)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Les catégories doivent être un tableau de chaînes'
+      });
+    }
+    
+    // 1. Créer l'idée d'abord
+    const ideaResult = await IdeaModel.create({ text, userId });
+    const ideaId = ideaResult.insertId;
+    
+    // 2. Si des catégories sont fournies, les associer à l'idée
+    if (categories && categories.length > 0) {
+      // Récupérer toutes les catégories existantes
+      const allCategories = await CategoryModel.getAll();
+      
+      // Filtrer les catégories qui existent et récupérer leurs IDs
+      const validCategoryIds = [];
+      for (const categoryName of categories) {
+        const existingCategory = allCategories.find(cat => cat.name === categoryName);
+        if (existingCategory) {
+          validCategoryIds.push(existingCategory.id);
+        }
+      }
+      
+      // Créer les liaisons idée-catégorie
+      for (const categoryId of validCategoryIds) {
+        await IdeaCategoryModel.link({ ideaId, categoryId });
+      }
+    }
     
     res.status(201).json({
       success: true,
       message: 'Idee creee avec succes',
-      data: { id: result.insertId, text, userId }
+      data: { id: ideaId, text, userId, categories: categories || [] }
     });
   } catch (error) {
     console.error('Erreur lors de la creation de l\'idee:', error);
