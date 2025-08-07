@@ -1,17 +1,20 @@
 // Logique de gestion des likes
 import * as LikeModel from '../models/Likes.js';
 
+// Recuperer le nombre de likes d'une idee
 export const getAllLikes = async (req, res) => {
   try {
-    const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
+    const { ideaId } = req.params;
     
-    // Le modele n'a pas de getAll par ideaId, mais on peut retourner le count
+    // Utilise la nouvelle methode countByIdeaId d'Herve
+    const count = await LikeModel.countByIdeaId(ideaId);
+    
     res.status(200).json({
       success: true,
-      message: 'Likes de l\'idee - voir avec les autres pour implémenter le count',
-      ideaId: ideaId,
-      info: {
-        note: 'Le modèle n\'a pas de fonction pour lister les likes, seulement link/unlink'
+      message: 'Nombre de likes recupere avec succes',
+      data: {
+        ideaId: parseInt(ideaId),
+        likesCount: count
       }
     });
   } catch (error) {
