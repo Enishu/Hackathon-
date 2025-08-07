@@ -1,9 +1,19 @@
 // Logique de gestion des commentaires
 import * as CommentModel from '../models/Comments.js';
+import * as IdeaModel from '../models/Ideas.js';
 
 export const getAllComments = async (req, res) => {
   try {
     const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
+    
+    // Vérifie d'abord que l'idée existe
+    const ideaExists = await IdeaModel.findById(ideaId);
+    if (!ideaExists) {
+      return res.status(404).json({
+        success: false,
+        message: 'Idée non trouvée'
+      });
+    }
     
     // Récupère tous les commentaires d'une idee spécifique
     const comments = await CommentModel.findByIdeaId(ideaId);
@@ -47,6 +57,15 @@ export const createComment = async (req, res) => {
     const { text } = req.body; // text au lieu de content
     const userId = req.user.id; // Recuperé du token JWT
     
+    // Vérifie d'abord que l'idée existe
+    const ideaExists = await IdeaModel.findById(ideaId);
+    if (!ideaExists) {
+      return res.status(404).json({
+        success: false,
+        message: 'Idée non trouvée'
+      });
+    }
+    
     // Validation
     if (!text) {
       return res.status(400).json({
@@ -78,6 +97,15 @@ export const updateComment = async (req, res) => {
     const { text } = req.body; // text au lieu de content
     const userId = req.user.id; // Recuperé du token JWT
     
+    // Vérifie d'abord que l'idée existe
+    const ideaExists = await IdeaModel.findById(ideaId);
+    if (!ideaExists) {
+      return res.status(404).json({
+        success: false,
+        message: 'Idée non trouvée'
+      });
+    }
+    
     // Validation
     if (!text) {
       return res.status(400).json({
@@ -99,7 +127,7 @@ export const updateComment = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Commentaire modifié avec succes',
-      data: { id, text, userId }
+      data: { id: commentId, text, userId }
     });
   } catch (error) {
     console.error('Erreur lors de la modification du commentaire:', error);
@@ -112,9 +140,18 @@ export const updateComment = async (req, res) => {
 
 export const deleteComment = async (req, res) => {
   try {
-    const { commentId } = req.params; // Maintenant on prend depuis les paramètres de route
+    const { ideaId, commentId } = req.params; // Maintenant on prend depuis les paramètres de route
     // Note: userId pourrait servir pour vérifier que l'utilisateur supprime son propre commentaire
     // voir avec les autres si on veut ajouter cette sécurité
+    
+    // Vérifie d'abord que l'idée existe
+    const ideaExists = await IdeaModel.findById(ideaId);
+    if (!ideaExists) {
+      return res.status(404).json({
+        success: false,
+        message: 'Idée non trouvée'
+      });
+    }
     
     // Utilise le modele Comments
     const result = await CommentModel.remove(commentId);

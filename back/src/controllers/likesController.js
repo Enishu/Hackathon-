@@ -1,10 +1,20 @@
 // Logique de gestion des likes
 import * as LikeModel from '../models/Likes.js';
+import * as IdeaModel from '../models/Ideas.js';
 
 // Recuperer le nombre de likes d'une idee
 export const getAllLikes = async (req, res) => {
   try {
     const { ideaId } = req.params;
+    
+    // Verification que l'idee existe avant de retourner ses likes
+    const idea = await IdeaModel.findById(ideaId);
+    if (!idea) {
+      return res.status(404).json({
+        success: false,
+        message: 'Idee non trouvee'
+      });
+    }
     
     // Utilise la nouvelle methode countByIdeaId d'Herve
     const count = await LikeModel.countByIdeaId(ideaId);
@@ -30,6 +40,15 @@ export const createLike = async (req, res) => {
   try {
     const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
     const userId = req.user.id; // Recuperé du token JWT
+    
+    // Verification que l'idee existe avant de pouvoir la liker
+    const idea = await IdeaModel.findById(ideaId);
+    if (!idea) {
+      return res.status(404).json({
+        success: false,
+        message: 'Idee non trouvee'
+      });
+    }
     
     // Utilise le modele Likes (link = aimer)
     try {
@@ -63,6 +82,15 @@ export const deleteLike = async (req, res) => {
   try {
     const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
     const userId = req.user.id; // Recuperé du token JWT
+    
+    // Verification que l'idee existe avant de supprimer le like
+    const idea = await IdeaModel.findById(ideaId);
+    if (!idea) {
+      return res.status(404).json({
+        success: false,
+        message: 'Idee non trouvee'
+      });
+    }
     
     // Utilise le modele Likes (unlink = ne plus aimer)
     const result = await LikeModel.unlink({ ideaId, userId });
