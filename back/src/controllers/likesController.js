@@ -1,64 +1,52 @@
 // Logique de gestion des likes
+import * as LikeModel from '../models/Likes.js';
+
 export const getAllLikes = async (req, res) => {
   try {
-    const { ideaId, userId } = req.query;
+    const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
     
-    // TODO: Implémenter la récupération des likes
-    // if (ideaId) {
-    //   const likes = await LikeModel.getLikesByIdeaId(ideaId);
-    // } else if (userId) {
-    //   const likes = await LikeModel.getLikesByUserId(userId);
-    // } else {
-    //   const likes = await LikeModel.getAllLikes();
-    // }
-    
+    // Le modèle d'Hervé n'a pas de getAll par ideaId, mais on peut retourner le count
     res.status(200).json({
       success: true,
-      message: 'Likes récupérés avec succès',
-      data: [] // TODO: remplacer par les vraies données
+      message: 'Likes de l\'idee - voir avec les autres pour implémenter le count',
+      ideaId: ideaId,
+      info: {
+        note: 'Le modèle n\'a pas de fonction pour lister les likes, seulement link/unlink'
+      }
     });
   } catch (error) {
-    console.error('Erreur lors de la récupération des likes:', error);
+    console.error('Erreur lors de la recuperation des likes:', error);
     res.status(500).json({
       success: false,
-      message: 'Erreur serveur lors de la récupération des likes'
+      message: 'Erreur serveur lors de la recuperation des likes'
     });
   }
 };
 
 export const createLike = async (req, res) => {
   try {
-    const { ideaId } = req.body;
-    const userId = req.user.id; // Récupéré du token JWT
+    const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
+    const userId = req.user.id; // Recuperé du token JWT
     
-    // TODO: Validation des données
-    // if (!ideaId) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: 'IdeaId est requis'
-    //   });
-    // }
-    
-    // TODO: Vérifier si le like existe déjà
-    // const existingLike = await LikeModel.getLikeByUserAndIdea(userId, ideaId);
-    // if (existingLike) {
-    //   return res.status(409).json({
-    //     success: false,
-    //     message: 'Like déjà existant'
-    //   });
-    // }
-    
-    // TODO: Créer le like en base de données
-    // const newLike = await LikeModel.createLike({
-    //   userId,
-    //   ideaId
-    // });
-    
-    res.status(201).json({
-      success: true,
-      message: 'Like ajouté avec succès',
-      data: {} // TODO: remplacer par les vraies données
-    });
+    // Utilise le modèle Likes d'Hervé (link = aimer)
+    try {
+      await LikeModel.link({ ideaId, userId });
+      
+      res.status(201).json({
+        success: true,
+        message: 'Like ajouté avec succes',
+        data: { ideaId, userId }
+      });
+    } catch (error) {
+      // Si erreur de contrainte unique (like déjà existant)
+      if (error.code === 'ER_DUP_ENTRY') {
+        return res.status(409).json({
+          success: false,
+          message: 'Vous avez déjà aimé cette idee'
+        });
+      }
+      throw error;
+    }
   } catch (error) {
     console.error('Erreur lors de l\'ajout du like:', error);
     res.status(500).json({
@@ -70,32 +58,22 @@ export const createLike = async (req, res) => {
 
 export const deleteLike = async (req, res) => {
   try {
-    const { ideaId } = req.body;
-    const userId = req.user.id; // Récupéré du token JWT
+    const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
+    const userId = req.user.id; // Recuperé du token JWT
     
-    // TODO: Validation des données
-    // if (!ideaId) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: 'IdeaId est requis'
-    //   });
-    // }
+    // Utilise le modèle Likes d'Hervé (unlink = ne plus aimer)
+    const result = await LikeModel.unlink({ ideaId, userId });
     
-    // TODO: Vérifier si le like existe
-    // const existingLike = await LikeModel.getLikeByUserAndIdea(userId, ideaId);
-    // if (!existingLike) {
-    //   return res.status(404).json({
-    //     success: false,
-    //     message: 'Like non trouvé'
-    //   });
-    // }
-    
-    // TODO: Supprimer le like
-    // await LikeModel.deleteLikeByUserAndIdea(userId, ideaId);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'Like non trouvé ou déjà supprimé'
+      });
+    }
     
     res.status(200).json({
       success: true,
-      message: 'Like supprimé avec succès'
+      message: 'Like supprimé avec succes'
     });
   } catch (error) {
     console.error('Erreur lors de la suppression du like:', error);
@@ -108,15 +86,16 @@ export const deleteLike = async (req, res) => {
 
 export const countLikes = async (req, res) => {
   try {
-    const { ideaId } = req.params;
+    const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
     
-    // TODO: Compter les likes pour une idée
-    // const count = await LikeModel.countLikesByIdeaId(ideaId);
+    // Le modèle d'Hervé n'a pas de fonction count, voir avec lui si on veut l'ajouter
+    // ou bien faire un SELECT COUNT(*) FROM likes WHERE idea_id = ?
     
     res.status(200).json({
       success: true,
-      message: 'Nombre de likes récupéré avec succès',
-      data: { count: 0 } // TODO: remplacer par le vrai count
+      message: 'Fonction count pas encore implémentée - voir avec Hervé pour ajouter au modèle',
+      ideaId: ideaId,
+      info: 'Le modèle Likes a seulement link() et unlink() pour l\'instant'
     });
   } catch (error) {
     console.error('Erreur lors du comptage des likes:', error);
