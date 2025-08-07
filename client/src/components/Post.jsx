@@ -43,7 +43,7 @@ export default ({ text, postId, likesCount, commentsCount, enableSkeleton = fals
 }
 function BtnCircle({ src, badge = false, badgeCount, activated = false, ...props }) {
     return (<>
-        <div {...props} className={`relative size-10 cursor-pointer rounded-full flex justify-center items-center shadow-lg ring-1
+        <button {...props} className={`relative size-10 cursor-pointer rounded-full flex justify-center items-center shadow-lg ring-1
             ${activated ? "bg-stone-300" : "bg-stone-100"} hover:bg-stone-200 ring-stone-200 
             ${activated ? "dark:bg-slate-500" : "dark:bg-slate-700"} dark:hover:bg-slate-600 dark:ring-slate-600`}>
             <img className="size-6 inline" src={src} alt="" />
@@ -54,6 +54,6 @@ function BtnCircle({ src, badge = false, badgeCount, activated = false, ...props
                     {badgeCount}
                 </Badge>
             }
-        </div>
+        </button>
     </>)
 }

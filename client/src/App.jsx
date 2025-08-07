@@ -6,7 +6,32 @@ import { Badge } from "@/components/ui/badge"
 import { useState, useEffect } from "react"
 import { Toaster } from "@/components/ui/sonner"
 import { Button } from "@/components/ui/button"
-import { useFetch } from './hooks/useFetch'
+import { create } from 'zustand'
+import { persist, createJSONStorage } from 'zustand/middleware'
+
+// const useStore = create((set) => ({
+//     bears: 0,
+//     increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
+//     removeAllBears: () => set({ bears: 0 }),
+//     updateBears: (newBears) => set({ bears: newBears }),
+// }))
+
+
+export const useStore = create()(
+    persist(
+        (set, get) => ({
+            isLogin: false,
+            loginToken: "",
+            username: "",
+            darkMode: true,
+            toggleDarkMode: () => set({ darkMode: !get().darkMode }),
+        }),
+        {
+            name: 'food-storage', // name of the item in the storage (must be unique)
+            storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+        },
+    ),
+)
 
 export default () => {
 
@@ -23,37 +48,30 @@ export default () => {
     })
     const toggleCategorySelected = newValue => setCategorySelected({ ...categorySelected, ...newValue })
 
-    const [darkMode, setDarkMode] = useState(true)
-    const toggleDarkMode = () => {
-        const isDark = !darkMode
-        setDarkMode(isDark)
-
-        if (isDark) {
-            document.documentElement.classList.add('dark')
-            // localStorage.setItem('theme', 'dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-            // localStorage.setItem('theme', 'light')
-        }
+    // const [darkMode, setDarkMode] = useState(true)
+    const darkMode = useStore((state) => state.darkMode)
+    const toggleDarkMode = useStore((state) => state.toggleDarkMode)
+    if (darkMode) {
+        document.documentElement.classList.add('dark')
+    } else {
+        document.documentElement.classList.remove('dark')
     }
+
     // const isDarkEnabled = import.meta.env.VITE_DARK_MODE === "true";
     // useEffect(() => {
     //     if (isDarkEnabled) toggleDarkMode()
     // }, []);
 
+    const bears = useStore((state) => state.bears)
+    const addABear = useStore((state) => state.addABear)
+
     return (
         <div className="py-10 h-full">
             <div className="mx-auto w-full max-w-4xl px-4">
 
-                {/* message d'erreur */}
-                {/* <Button
-                    variant="outline"
-                    onClick={() =>
-                        toast.error("Error: Cette adresse mail existe déjà.")
-                    }
-                >
-                    Show Toast
-                </Button> */}
+                {/* <Button onClick={() => addABear()}
+                >Button</Button>
+                {bears} */}
 
                 {/* menu login, theme, addPost */}
                 <div className="fixed flex justify-center gap-3 z-10
@@ -63,29 +81,33 @@ export default () => {
 
                     <div className="grid grid-cols-1 justify-items-center gap-1">
                         <PopUpLogin>
-                            <div className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full shadow-lg
+                            <button className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full shadow-lg
                         dark:bg-slate-700 dark:hover:bg-slate-600">
-                                <img className="object-contain" src="./src/icons/man.svg" alt="" />
-                            </div>
+                                <img className="object-contain" src="./src/icons/man.svg" alt="login" />
+                            </button>
                         </PopUpLogin>
                         <Badge className="bg-stone-100 shadow-lg text-stone-700
                     dark:bg-slate-700 dark:text-stone-200">Se connecter</Badge>
                     </div>
                     <div className="grid grid-cols-1 justify-items-center gap-1">
-                        <div className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full shadow-lg
+                        <button className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full shadow-lg
                     dark:bg-slate-700 dark:hover:bg-slate-600"
                             onClick={toggleDarkMode} >
-                            <img className="object-contain" src="./src/icons/sun.svg" alt="" />
-                        </div>
+                            {darkMode ?
+                                <img className="object-contain" src="./src/icons/moon.svg" alt="" />
+                                :
+                                <img className="object-contain" src="./src/icons/sun.svg" alt="" />
+                            }
+                        </button>
                         <Badge className="bg-stone-100 shadow-lg text-stone-700
                     dark:bg-slate-700 dark:text-stone-200">Thème {darkMode ? "sombre" : "clair"}</Badge>
                     </div>
                     <div className="grid grid-cols-1 justify-items-center gap-1">
                         <PopUpCreatePost>
-                            <div className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full  shadow-lg
+                            <button className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full  shadow-lg
                         dark:bg-slate-700 dark:hover:bg-slate-600">
                                 <img className="object-contain" src="./src/icons/pencil.svg" alt="" />
-                            </div>
+                            </button>
                         </PopUpCreatePost>
                         <Badge className="bg-stone-100 shadow-lg text-stone-700
                     dark:bg-slate-700 dark:text-stone-200">Poster une idée</Badge>
