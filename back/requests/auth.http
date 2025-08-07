@@ -1,5 +1,10 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+
 ### Créer un utilisateur (suivi de l'envoi d'un email avec token)
-POST http://localhost:3000/api/auth/register
+POST http://{{host}}/api/auth/register
 Content-Type: application/json
 
 {
@@ -11,12 +16,12 @@ Content-Type: application/json
 
 
 ### Vérifier l'email (à gérer côté front normalement)
-GET http://localhost:3000/api/auth/verify-email/:token
+GET http://{{host}}/api/auth/verify-email/:token
 Content-Type: application/json
 
 
 ### Connexion utilisateur
-POST http://localhost:3000/api/auth/login
+POST http://{{host}}/api/auth/login
 Content-Type: application/json
 
 {
@@ -26,7 +31,7 @@ Content-Type: application/json
 
 
 ### Mot de passe oublié (suivi de l'envoi d'un email avec token)
-POST http://localhost:3000/api/auth/forgot-password
+POST http://{{host}}/api/auth/forgot-password
 Content-Type: application/json
 
 {
@@ -35,12 +40,12 @@ Content-Type: application/json
 
 
 ### Lien de confirmation avec token pour autoriser le reset (à gérer côté front)
-GET http://localhost:3000/api/auth/reset-password/:token
+GET http://{{host}}/api/auth/reset-password/:token
 Content-Type: application/json
 
 
 ### Réinitialiser le mot de passe avec token
-POST http://localhost:3000/api/auth/reset-password/:token
+POST http://{{host}}/api/auth/reset-password/:token
 Content-Type: application/json
 
 {
