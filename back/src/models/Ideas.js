@@ -3,7 +3,7 @@ import pool from "../config/database.js";
 /** * Modèle pour les idées
  * Permet de gérer les opérations CRUD sur les idées dans la base de données
  */
-export async function create(data) {   
+export async function create(data) {
     const { text, userId } = data;
     const [result] = await pool.query(
         "INSERT INTO ideas (text, user_id) VALUES (?, ?)",
@@ -13,21 +13,35 @@ export async function create(data) {
 }
 
 export async function getAll(data) {
-    const { order = "DESC", limit, offset } = data || {};
-    const query_elements = [
-        `SELECT * FROM ideas ORDER BY created_at ${
-            ["ASC", "DESC"].includes(order) ? order : "DESC"
-        }`,
-    ];
+    const { order = "DESC", limit, offset, categoryIds } = data || {};
+    console.log(data);
+
+    const query_elements = [];
     const params = [];
+
+    if (categoryIds)
+        query_elements.push(`
+            SELECT DISTINCT i.*, ic.category_id FROM ideas i
+            JOIN idea_category ic ON i.id = ic.idea_id
+            WHERE ic.category_id IN (${categoryIds})
+        `);
+    else
+        query_elements.push(
+            `SELECT * FROM ideas ORDER BY created_at ${
+                ["ASC", "DESC"].includes(order) ? order : "DESC"
+            }`
+        );
+
     if (limit > 0) {
         query_elements.push(`LIMIT ?`);
         params.push(limit);
     }
+
     if (offset >= 0) {
         query_elements.push(`OFFSET ?`);
         params.push(offset);
     }
+
     const query = query_elements.join(" ");
     const [rows] = await pool.query(query, params);
     return rows;
