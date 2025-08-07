@@ -49,6 +49,8 @@ export default () => {
     const isLogin = useStore((state) => state.isLogin)
     const username = useStore((state) => state.username)
 
+    const [refreshApp, setRefreshApp] = useState({})
+
     return (
         <div className="py-10 h-full">
             <div className="mx-auto w-full max-w-4xl px-4">
@@ -87,7 +89,7 @@ export default () => {
                     dark:bg-slate-700 dark:text-stone-200">Thème {darkMode ? "sombre" : "clair"}</Badge>
                     </div>
                     <div className="grid grid-cols-1 justify-items-center gap-1">
-                        <PopUpCreatePost>
+                        <PopUpCreatePost setRefreshApp={setRefreshApp}>
                             <button className="p-3 cursor-pointer size-14 hover:bg-stone-200 active:bg-stone-300 transition bg-stone-100 rounded-full  shadow-lg
                         dark:bg-slate-700 dark:hover:bg-slate-600">
                                 <img className="object-contain" src="./src/icons/pencil.svg" alt="" />

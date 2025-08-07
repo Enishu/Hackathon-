@@ -25,7 +25,8 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "text": "Une application pour organiser des hackathons en ligne"
+  "text": "Une application pour organiser des hackathons en ligne",
+  "categories": ["Autres"]
 }
 
 ### 4.2 Liker une idée

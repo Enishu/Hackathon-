@@ -13,15 +13,31 @@ import { Label } from "@/components/ui/label"
 import SelectsCategories from "./SelectsCategories"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
+import { request } from "../hooks/request"
 
-export default ({ children }) => {
+export default ({ children, setRefreshApp }) => {
 
-    const [text, setText] = useState('');
-    const [cat1, setCat1] = useState(undefined);
-    const [cat2, setCat2] = useState(undefined);
+    const [text, setText] = useState("Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quibusdam a dolorem tenetur saepe praesentium.");
+    const [cat1, setCat1] = useState("1");
+    const [cat2, setCat2] = useState("1");
+
+    const [loading, setLoading] = useState(false)
+    const [data, setData] = useState([])
+    const [error, setError] = useState(null)
+
     const sendPost = e => {
         e.preventDefault();
-        console.log({ text, cat1, cat2 })
+        setLoading(true)
+        request({ action: "addPost", params: { text, categories: [cat1, cat2] } }).then(res => {
+            setLoading(false)
+            if (!res.error) {
+                setData(res.data)
+                setRefreshApp()
+                // setOpenModal(false)
+            } else {
+                setError(true)
+            }
+        })
     }
 
     return <>
