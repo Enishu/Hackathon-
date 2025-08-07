@@ -1,12 +1,48 @@
 import Button from "./Button"
 import Post from "./Post"
-import { useState } from "react"
+import { useState, useMemo, useEffect } from "react"
 import { useFetch } from '../hooks/useFetch'
+import { request } from "../hooks/request"
 
-export default ({ className }) => {
+export default ({ className, filters }) => {
+    // console.log("Posts clg", filters)
+
     const [toggleSortFilters, setToggleSortFilters] = useState(true)
-    const { loading, data: posts, errors } = useFetch({ action: "getPosts", params: { range: [10 - 20] } })
-    console.log(loading)
+
+    // const fetchParams = {
+    //         action: "getPosts",
+    //         params: { range: [10 - 20] },
+    //         filters
+    //     }
+    // const { loading, data: posts, errors } = useFetch(fetchParams)
+
+    const [loading, setLoading] = useState(true)
+    const [data, setData] = useState([])
+    const [error, setError] = useState(null)
+    const posts = data
+
+    const fetchParams = {
+        action: "getPosts",
+        //params: { range: [10 - 20] },
+        filters
+    }
+
+    useEffect(() => {
+        setLoading(true)
+        request({ action: "getPosts", params: fetchParams }).then(res => {
+            console.log("RES", res)
+            setLoading(false)
+            if (!res.error) {
+                setData(res.data)
+            } else {
+                setError(true)
+            }
+        })
+    }, [filters]);
+
+    let sortedPosts = toggleSortFilters ? posts.sort((a, b) => b.date - a.date) : posts.sort((a, b) => b.likeNumber - a.likeNumber)
+    console.log(sortedPosts)
+
 
     return (<>
         <div className="flex flex-wrap justify-center gap-4 mt-3">
@@ -28,8 +64,12 @@ export default ({ className }) => {
                     <Post key={index} enableSkeleton={loading}></Post>
                 ))
                 :
-                posts.sort((a, b) => a.date - b.date)
-                    .map(item => <Post key={item.id} postId={item.id} likesCount={item.likeNumber} commentsCount={item.commentNumber} text={item.text}></Post>)
+                error ?
+                <div className="flex justify-center mt-14">
+                    <img className="size-32 inline" src="./src/icons/error.svg" alt="" />
+                </div>
+                :
+                sortedPosts.map(item => <Post key={item.id} postId={item.id} likesCount={item.likeNumber} commentsCount={item.commentNumber} text={item.text} author={item.author}></Post>)
             }
         </div>
     </>)

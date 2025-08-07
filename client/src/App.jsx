@@ -8,8 +8,6 @@ import { Toaster } from "@/components/ui/sonner"
 import { Button } from "@/components/ui/button"
 import { useFetch } from './hooks/useFetch'
 
-const isDarkEnabled = import.meta.env.VITE_DARK_MODE === "true";
-
 export default () => {
 
     const [categorySelected, setCategorySelected] = useState({
@@ -25,7 +23,7 @@ export default () => {
     })
     const toggleCategorySelected = newValue => setCategorySelected({ ...categorySelected, ...newValue })
 
-    const [darkMode, setDarkMode] = useState(false)
+    const [darkMode, setDarkMode] = useState(true)
     const toggleDarkMode = () => {
         const isDark = !darkMode
         setDarkMode(isDark)
@@ -38,9 +36,10 @@ export default () => {
             // localStorage.setItem('theme', 'light')
         }
     }
-    useEffect(() => {
-        if (isDarkEnabled) toggleDarkMode()
-    }, []);
+    // const isDarkEnabled = import.meta.env.VITE_DARK_MODE === "true";
+    // useEffect(() => {
+    //     if (isDarkEnabled) toggleDarkMode()
+    // }, []);
 
     return (
         <div className="py-10 h-full">
@@ -153,6 +152,9 @@ export default () => {
 
                     {/* Ideas */}
                     <Posts
+                        filters={Object.entries(categorySelected)
+                            .filter(item => item[1])
+                            .map(item => item[0])}
                         className="mb-20" />
 
                     {/* Messages d'erreurs */}

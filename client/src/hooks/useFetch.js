@@ -41,6 +41,8 @@ export function useFetch({ action, params }) {
     const domain = "https://api.jeremiel.dev"
     const url = domain + route
 
+    console.log("FETCH clg", params)
+
     useEffect(() => {
         wait().then((wait) => {
             console.log(wait);
