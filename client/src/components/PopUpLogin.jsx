@@ -38,7 +38,7 @@ export default ({ children }) => {
                         <div className="grid gap-3">
                             <Label htmlFor="username-1" className="flex justify-between">
                                 <span>Mot de passe</span>
-                                <a href="#" className="text-blue-500">Mot de passe oublier</a>
+                                <a hidden href="#" className="text-blue-500">Mot de passe oublier</a>
                             </Label>
                             <Input id="username-1" name="username" />
                         </div>
@@ -47,7 +47,7 @@ export default ({ children }) => {
 
                         <div className="w-full flex flex-wrap sm:flex-nowrap justify-between gap-3">
                             <PopUpRegister>
-                                <Button type="" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
+                                <Button disabled type="" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
                         dark:bg-stone-100 dark:hover:bg-stone-300 dark:active:bg-stone-400">Créer un compte</Button>
                             </PopUpRegister>
                             <Button type="submit" className="cursor-pointer bg-stone-700 hover:bg-stone-600 active:bg-stone-500
