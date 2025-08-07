@@ -10,6 +10,7 @@ import categoriesRoutes from './src/routes/categories.js';
 const app = express();
 
 // Tâches programmées pour "vider" les utilisateurs non vérifiés de la base de données
+// Tâches programmées pour "vider" les utilisateurs non vérifiés de la base de données
 deleteUnverifiedUsers.start();
 
 // Middlewares
@@ -20,7 +21,6 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("Bienvenue sur l'API de la boite à idées!");
 });
-
 app.use("/api/auth", authRoutes); // Authentification
 app.use('/api/ideas', ideasRoutes); // Routes principales des idées qui incluent les sous-routes comments et likes
 app.use('/api/categories', categoriesRoutes); // Routes de gestion des catégories
