@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion / Inscription</title>
+  <link rel="stylesheet" href="styleAuth/variablesAuth.css" />
+  <link rel="stylesheet" href="styleAuth/styleAuth.css" />
+  <link rel="stylesheet" href="styleAuth/responsiveAuth.css" />
+</head>
+<body>
+  <!-- Bouton thème clair/sombre -->
+  <button id="themeToggle" aria-label="Changer le thème">🌙 Mode sombre</button>
+
+  <main class="auth-container">
+    <h1 class="auth-title">Bienvenue sur Idées Accessibles</h1>
+
+    <div class="toggle-form">
+      <button id="btn-login" class="active">Se connecter</button>
+      <button id="btn-register">S’inscrire</button>
+    </div>
+
+    <form id="login-form" class="auth-form" aria-label="Formulaire de connexion">
+      <label for="login-email">Adresse e-mail</label>
+      <input type="email" id="login-email" name="email" required aria-required="true" />
+
+      <label for="login-password">Mot de passe</label>
+      <input type="password" id="login-password" name="password" required aria-required="true" />
+
+      <button type="submit" class="btn-auth">Se connecter</button>
+    </form>
+
+    <form id="register-form" class="auth-form hidden" aria-label="Formulaire d'inscription">
+      <label for="register-name">Nom complet</label>
+      <input type="text" id="register-name" name="name" required aria-required="true" />
+
+      <label for="register-email">Adresse e-mail</label>
+      <input type="email" id="register-email" name="email" required aria-required="true" />
+
+      <label for="register-password">Mot de passe</label>
+      <input type="password" id="register-password" name="password" required aria-required="true" />
+
+      <button type="submit" class="btn-auth">Créer un compte</button>
+    </form>
+  </main>
+
+  <!-- Scripts -->
+  <script src="themeAuth.js"></script>
+  <script>
+    const btnLogin = document.getElementById('btn-login');
+    const btnRegister = document.getElementById('btn-register');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    btnLogin.addEventListener('click', () => {
+      btnLogin.classList.add('active');
+      btnRegister.classList.remove('active');
+      loginForm.classList.remove('hidden');
+      registerForm.classList.add('hidden');
+    });
+
+    btnRegister.addEventListener('click', () => {
+      btnRegister.classList.add('active');
+      btnLogin.classList.remove('active');
+      registerForm.classList.remove('hidden');
+      loginForm.classList.add('hidden');
+    });
+  </script>
+</body>
+</html>

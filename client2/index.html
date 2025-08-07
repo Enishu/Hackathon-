@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idées Accessibles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="variables.css">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="logo">💡 <span>IdéesAccessibles</span></div>
+
+    <!-- Switch thème clair/sombre accessible -->
+    <div class="theme-switch">
+      <label class="switch" for="theme-toggle">
+        <input type="checkbox" id="theme-toggle" aria-label="Activer le mode sombre" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <!-- Menu burger -->
+    <button class="burger" aria-label="Menu">☰</button>
+
+    <div class="nav-buttons">
+      <a href="formIdeas.html" class="btn primary">+ Nouvelle idée</a>
+      <a href="auth.html" class="btn secondary">👤 Se connecter</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="intro">
+      <h1>Partageons nos idées pour une société plus inclusive</h1>
+      <p class="tagline">Proposez, votez et commentez des idées pour améliorer l’accessibilité.</p>
+    </section>
+
+    <!-- Cartes par thème -->
+    <section class="cards-grid">
+      <div class="card education">
+        <div class="icon">🎓</div>
+        <h2>Éducation</h2>
+        <p>Accessibilité dans l’éducation et la formation pour tous les handicaps.</p>
+        <span class="count">12 idées</span>
+        <button class="btn small">Voir les idées</button>
+        <div class="interactions">
+          <span class="like">❤️ <span class="count">12</span></span>
+          <span class="comment">💬 <span class="count">4</span></span>
+        </div>
+      </div>
+
+      <div class="card sante">
+        <div class="icon">💚</div>
+        <h2>Santé</h2>
+        <p>Services de santé accessibles et inclusifs pour tous.</p>
+        <span class="count">8 idées</span>
+        <button class="btn small">Voir les idées</button>
+        <div class="interactions">
+          <span class="like">❤️ <span class="count">5</span></span>
+          <span class="comment">💬 <span class="count">2</span></span>
+        </div>
+      </div>
+
+      <div class="card transport">
+        <div class="icon">🚗</div>
+        <h2>Transport</h2>
+        <p>Améliorer l’accessibilité dans les transports et les déplacements.</p>
+        <span class="count">15 idées</span>
+        <button class="btn small">Voir les idées</button>
+        <div class="interactions">
+          <span class="like">❤️ <span class="count">18</span></span>
+          <span class="comment">💬 <span class="count">7</span></span>
+        </div>
+      </div>
+
+      <div class="card loisir">
+        <div class="icon">🎮</div>
+        <h2>Loisir</h2>
+        <p>Rendre les activités culturelles et de loisirs accessibles à tous.</p>
+        <span class="count">6 idées</span>
+        <button class="btn small">Voir les idées</button>
+        <div class="interactions">
+          <span class="like">❤️ <span class="count">10</span></span>
+          <span class="comment">💬 <span class="count">3</span></span>
+        </div>
+      </div>
+
+      <div class="card urbanisme">
+        <div class="icon">🏗️</div>
+        <h2>Urbanisme</h2>
+        <p>Rendre la ville accessible : trottoirs, signalisation, bâtiments publics.</p>
+        <span class="count">7 idées</span>
+        <button class="btn small">Voir les idées</button>
+        <div class="interactions">
+          <span class="like">❤️ <span class="count">3</span></span>
+          <span class="comment">💬 <span class="count">1</span></span>
+        </div>
+      </div>
+
+      <div class="card sport">
+        <div class="icon">⚽</div>
+        <h2>Sport</h2>
+        <p>Favoriser l’accès aux installations sportives pour tous.</p>
+        <span class="count">5 idées</span>
+        <button class="btn small">Voir les idées</button>
+        <div class="interactions">
+          <span class="like">❤️ <span class="count">6</span></span>
+          <span class="comment">💬 <span class="count">2</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accessibilité -->
+    <section class="accessibilite">
+      <h3>Accessibilité au cœur du design</h3>
+      <div class="handicap-boxes">
+        <div class="handicap-box">
+          <div class="icon">🧠</div>
+          <h4>Handicap cognitif</h4>
+          <p>Interface simple, icônes explicites, instructions claires.</p>
+        </div>
+        <div class="handicap-box">
+          <div class="icon">🦻</div>
+          <h4>Handicap auditif</h4>
+          <p>Interface visuelle claire, sous-titres et alternatives audio.</p>
+        </div>
+        <div class="handicap-box">
+          <div class="icon">🦯</div>
+          <h4>Handicap visuel</h4>
+          <p>Contraste élevé, lecteur d’écran, navigation clavier.</p>
+        </div>
+        <div class="handicap-box">
+          <div class="icon">♿</div>
+          <h4>Handicap moteur</h4>
+          <p>Navigation clavier, boutons larges, temps d’action étendu.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="theme.js"></script>
+  <script>
+    // Menu burger responsive
+    const burger = document.querySelector('.burger');
+    const navbar = document.querySelector('.navbar');
+    burger.addEventListener('click', () => {
+      navbar.classList.toggle('active');
+    });
+  </script>
+
+  <!-- TODO :
+    - Créer formIdeas.html pour ajouter une idée
+    - Ajouter une base de données avec les tables : utilisateurs, idees, likes, commentaires
+    - Créer ideas.html pour afficher les idées d’une catégorie avec commentaires et likes dynamiques
+  -->
+</body>
+</html>
