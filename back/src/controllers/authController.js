@@ -132,7 +132,7 @@ export async function login(req, res) {
     }
 }
 
-export async function forgottenPassword(req, res) {
+export async function forgotPassword(req, res) {
     try {
         const { email } = req.body;
 

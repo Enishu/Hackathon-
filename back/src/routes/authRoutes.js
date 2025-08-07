@@ -1,5 +1,5 @@
 import {
-    forgottenPassword,
+    forgotPassword,
     login,
     register,
     resetPassword,
@@ -14,7 +14,7 @@ router.get("/verify-email/:token", verifyEmail);
 
 router.post("/login", login);
 
-router.post("/forgotten-password", forgottenPassword);
+router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword)
 
 export default router;
