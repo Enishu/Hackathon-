@@ -4,13 +4,13 @@ Content-Type: application/json
 
 {
   "username": "wtf64",
-  "email": "hg64off+boiteaidee01@gmail.com",  
+  "email": "hg64off+boiteaidee01@gmail.com",
   "password": "superMotDePasse",
   "passwordConfirm": "superMotDePasse"
 }
 
 
-### Vérifier l'email
+### Vérifier l'email (à gérer côté front normalement)
 GET http://localhost:3000/api/auth/verify-email/:token
 Content-Type: application/json
 
@@ -33,7 +33,8 @@ Content-Type: application/json
   "email": "hg64off+boiteaidee01@gmail.com"
 }
 
-### Lien de confirmation avec token pour autoriser le reset
+
+### Lien de confirmation avec token pour autoriser le reset (à gérer côté front)
 GET http://localhost:3000/api/auth/reset-password/:token
 Content-Type: application/json
 
@@ -44,5 +45,5 @@ Content-Type: application/json
 
 {
   "password": "nouveauMotDePasse",
-  "passwordConfirm" : "nouveauMotDePasse"
+  "passwordConfirm": "nouveauMotDePasse"
 }

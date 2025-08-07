@@ -53,13 +53,14 @@ export const getIdeaById = async (req, res) => {
 // Creer une nouvelle idee 
 export const createIdeas = async (req, res) => {
   try {
-    const { text, userId } = req.body; // Correspond au modèle SQL (text, userId)
+    const { text } = req.body; // Seul le text est nécessaire dans le body
+    const userId = req.user.id; // L'utilisateur vient du token JWT
     
     // Validation simple
-    if (!text || !userId) {
+    if (!text) {
       return res.status(400).json({
         success: false,
-        message: 'Le texte et l\'ID utilisateur sont requis'
+        message: 'Le texte est requis'
       });
     }
     
@@ -84,13 +85,14 @@ export const createIdeas = async (req, res) => {
 export const updateIdea = async (req, res) => {
   try {
     const { id } = req.params;
-    const { text, userId } = req.body; // Correspond au modèle SQL
+    const { text } = req.body; // On prend seulement text du body
+    const userId = req.user.id; // L'utilisateur vient du token JWT
 
     // Validation
-    if (!text || !userId) {
+    if (!text) {
       return res.status(400).json({
         success: false,
-        message: 'Le texte et l\'ID utilisateur sont requis'
+        message: 'Le texte est requis'
       });
     }
 
@@ -100,7 +102,7 @@ export const updateIdea = async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({
         success: false,
-        message: 'Idée non trouvée'
+        message: 'Idée non trouvée ou vous n\'etes pas autorise'
       });
     }
 
