@@ -1,5 +1,5 @@
-@hostname = localhost
-@port = 3000
+@hostname = hackathon-backend-3688.onrender.com
+@port = 80
 @host = {{hostname}}:{{port}}
 
 
@@ -8,8 +8,8 @@ POST http://{{host}}/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "wtf64",
-  "email": "hg64off+boiteaidee01@gmail.com",
+  "username": "wtf64d",
+  "email": "hg64off+boiteaidee02@gmail.com",
   "password": "superMotDePasse",
   "passwordConfirm": "superMotDePasse"
 }
@@ -25,7 +25,7 @@ POST http://{{host}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "hg64off+boiteaidee01@gmail.com",
+  "email": "hg64off+boiteaidee02@gmail.com",
   "password": "superMotDePasse"
 }
 
