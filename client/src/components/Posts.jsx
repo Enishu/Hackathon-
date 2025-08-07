@@ -30,7 +30,6 @@ export default ({ className, filters }) => {
     useEffect(() => {
         setLoading(true)
         request({ action: "getPosts", params: fetchParams }).then(res => {
-            console.log("RES", res)
             setLoading(false)
             if (!res.error) {
                 setData(res.data)
@@ -41,8 +40,6 @@ export default ({ className, filters }) => {
     }, [filters]);
 
     let sortedPosts = toggleSortFilters ? posts.sort((a, b) => b.date - a.date) : posts.sort((a, b) => b.likeNumber - a.likeNumber)
-    console.log(sortedPosts)
-
 
     return (<>
         <div className="flex flex-wrap justify-center gap-4 mt-3">

@@ -4,11 +4,11 @@ import { toast } from "sonner"
 
 //MOCK
 import posts from './mocks/getPosts.json';
+// import useStore from '../hooks/store';
 
 
 export function request({ action, params }) {
     return new Promise((resolve, reject) => {
-        // console.log("FETCH clg", params.filters)
 
         //MOCK
         function mock(action) {
@@ -21,10 +21,11 @@ export function request({ action, params }) {
             return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve("wait");
-                }, 0);
+                }, 1000);
             });
         }
 
+        // const token = useStore((state) => state.token)
 
         //adaptateur
         let route = "/"
@@ -42,10 +43,14 @@ export function request({ action, params }) {
         }
 
         if (method == "POST") {
-            headers = { 'Content-Type': 'application/json', }
+            headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer TON_JETON_ICI`
+            }
             body = JSON.stringify(params)
-            console.log(body)
+            // console.log(body)
         }
+        // console.log("request", token)
 
         const domain = "http://localhost:3002/api"
         const url = domain + route
