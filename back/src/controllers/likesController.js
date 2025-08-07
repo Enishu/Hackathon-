@@ -5,7 +5,7 @@ export const getAllLikes = async (req, res) => {
   try {
     const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
     
-    // Le modèle d'Hervé n'a pas de getAll par ideaId, mais on peut retourner le count
+    // Le modele n'a pas de getAll par ideaId, mais on peut retourner le count
     res.status(200).json({
       success: true,
       message: 'Likes de l\'idee - voir avec les autres pour implémenter le count',
@@ -28,7 +28,7 @@ export const createLike = async (req, res) => {
     const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
     const userId = req.user.id; // Recuperé du token JWT
     
-    // Utilise le modèle Likes d'Hervé (link = aimer)
+    // Utilise le modele Likes (link = aimer)
     try {
       await LikeModel.link({ ideaId, userId });
       
@@ -61,7 +61,7 @@ export const deleteLike = async (req, res) => {
     const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
     const userId = req.user.id; // Recuperé du token JWT
     
-    // Utilise le modèle Likes d'Hervé (unlink = ne plus aimer)
+    // Utilise le modele Likes (unlink = ne plus aimer)
     const result = await LikeModel.unlink({ ideaId, userId });
     
     if (result.affectedRows === 0) {
@@ -88,12 +88,12 @@ export const countLikes = async (req, res) => {
   try {
     const { ideaId } = req.params; // Maintenant on prend depuis les paramètres de route
     
-    // Le modèle d'Hervé n'a pas de fonction count, voir avec lui si on veut l'ajouter
+    // Le modele n'a pas de fonction count, voir avec l'equipe si on veut l'ajouter
     // ou bien faire un SELECT COUNT(*) FROM likes WHERE idea_id = ?
     
     res.status(200).json({
       success: true,
-      message: 'Fonction count pas encore implémentée - voir avec Hervé pour ajouter au modèle',
+      message: 'Fonction count pas encore implementee - voir avec l\'equipe pour ajouter au modele',
       ideaId: ideaId,
       info: 'Le modèle Likes a seulement link() et unlink() pour l\'instant'
     });

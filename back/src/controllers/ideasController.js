@@ -4,7 +4,7 @@ import * as IdeaModel from '../models/Ideas.js';
 // Recuperer toutes les idees
 export const getAllIdeas = async (req, res) => {
   try {
-    // Utilise le modèle SQL de votre collègue
+    // Utilise le modele SQL
     const ideas = await IdeaModel.getAll();
     
     res.status(200).json({
@@ -26,7 +26,7 @@ export const getIdeaById = async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Utilise la nouvelle fonction findById de votre collègue !
+    // Utilise la fonction findById
     const idea = await IdeaModel.findById(id);
     
     if (!idea) {
@@ -53,7 +53,7 @@ export const getIdeaById = async (req, res) => {
 // Creer une nouvelle idee 
 export const createIdeas = async (req, res) => {
   try {
-    const { text, userId } = req.body; // Correspond au modèle SQL (text, userId)
+    const { text, userId } = req.body; // Correspond au modele (text, userId)
     
     // Validation simple
     if (!text || !userId) {
@@ -63,7 +63,7 @@ export const createIdeas = async (req, res) => {
       });
     }
     
-    // Utilise le modèle SQL de votre collègue
+    // Utilise le modele SQL
     const result = await IdeaModel.create({ text, userId });
     
     res.status(201).json({
@@ -84,7 +84,7 @@ export const createIdeas = async (req, res) => {
 export const updateIdea = async (req, res) => {
   try {
     const { id } = req.params;
-    const { text, userId } = req.body; // Correspond au modèle SQL
+    const { text, userId } = req.body; // Correspond au modele
 
     // Validation
     if (!text || !userId) {
@@ -94,7 +94,7 @@ export const updateIdea = async (req, res) => {
       });
     }
 
-    // Utilise le modèle SQL de votre collègue
+    // Utilise le modele SQL
     const result = await IdeaModel.update({ text, userId, id });
     
     if (result.affectedRows === 0) {
@@ -123,7 +123,7 @@ export const deleteIdea = async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Utilise le modèle SQL de votre collègue
+    // Utilise le modele
     const result = await IdeaModel.remove(id);
     
     if (result.affectedRows === 0) {
@@ -151,7 +151,7 @@ export const getIdeasByUser = async (req, res) => {
   try {
     const { userId } = req.params;
     
-    // Utilise la fonction findByUserId du modèle SQL
+    // Utilise la fonction findByUserId du modele
     const ideas = await IdeaModel.findByUserId(userId);
     
     res.status(200).json({

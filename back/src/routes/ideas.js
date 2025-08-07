@@ -44,7 +44,7 @@ router.delete('/:id', auth, deleteIdea);
 // GET /api/ideas/user/:userId - Recuperer les idees d'un utilisateur (PUBLIC)
 router.get('/user/:userId', getIdeasByUser);
 
-// ========== SOUS-ROUTES COMMENTS ==========
+//         SOUS-ROUTES COMMENTS 
 // GET /api/ideas/:ideaId/comments - Recuperer tous les commentaires d'une idee (PUBLIC)
 router.get('/:ideaId/comments', getAllComments);
 
@@ -57,7 +57,7 @@ router.put('/:ideaId/comments/:commentId', auth, updateComment);
 // DELETE /api/ideas/:ideaId/comments/:commentId - Supprimer un commentaire (PROTEGE)
 router.delete('/:ideaId/comments/:commentId', auth, deleteComment);
 
-// ========== SOUS-ROUTES LIKES ==========
+//            SOUS-ROUTES LIKES 
 // GET /api/ideas/:ideaId/likes - Recuperer tous les likes d'une idee (PUBLIC)
 router.get('/:ideaId/likes', getAllLikes);
 
