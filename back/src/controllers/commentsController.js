@@ -21,7 +21,10 @@ export const getAllComments = async (req, res) => {
     res.status(200).json({
       success: true,
       message: 'Commentaires de l\'idee recuperés avec succes',
-      data: comments
+      data: {
+        comments: comments || [],
+        count: comments ? comments.length : 0
+      }
     });
   } catch (error) {
     console.error('Erreur lors de la recuperation des commentaires:', error);

@@ -24,7 +24,8 @@ export const getAllLikes = async (req, res) => {
       message: 'Nombre de likes recupere avec succes',
       data: {
         ideaId: parseInt(ideaId),
-        likesCount: count
+        likes: [], // Pour l'instant tableau vide, le modèle n'a pas de findByIdeaId
+        count: count || 0
       }
     });
   } catch (error) {
