@@ -39,11 +39,9 @@ export default ({ children }) => {
 
     const sendLogin = e => {
         e.preventDefault();
-        console.log({ email, password })
 
         setLoading(true)
         request({ action: "auth", params: { email, password } }).then(res => {
-            console.log("RES", res)
             setLoading(false)
             if (!res.error) {
                 setData(res.data)

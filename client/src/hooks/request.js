@@ -21,7 +21,7 @@ export function request({ action, params }) {
             return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve("wait");
-                }, 1000);
+                }, 0);
             });
         }
 
@@ -42,11 +42,11 @@ export function request({ action, params }) {
                     if (filter == "mobilite") return 2
                     if (filter == "sante") return 3
                     if (filter == "urbanisme") return 4
-                    if (filter == "autres") return 5
-                    if (filter == "cognitif") return 6
-                    if (filter == "visuel") return 7
-                    if (filter == "auditif") return 8
-                    if (filter == "moteur") return 9
+                    if (filter == "autres") return 6
+                    if (filter == "cognitif") return 7
+                    if (filter == "visuel") return 8
+                    if (filter == "auditif") return 9
+                    if (filter == "moteur") return 10
                     return 0
                 }).join(',')
                 route = "/ideas?category_ids=" + filtersQuery
@@ -74,8 +74,8 @@ export function request({ action, params }) {
             body = JSON.stringify(params)
         }
 
-        // const domain = "https://hackathon-backend-3688.onrender.com/api"
-        const domain = "http://localhost:3002/api"
+        const domain = "https://hackathon-backend-3688.onrender.com/api"
+        // const domain = "http://localhost:3002/api"
         const url = domain + route
 
         wait().then((wait) => {

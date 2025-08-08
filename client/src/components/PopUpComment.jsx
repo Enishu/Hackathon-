@@ -16,6 +16,8 @@ import { Label } from "@/components/ui/label"
 
 export default ({ children, postId }) => {
 
+    console.log("test")
+
     let comments = [
         {
             "commentId": 1,

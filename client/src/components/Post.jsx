@@ -9,8 +9,11 @@ import useStore from '../hooks/store';
 
 
 export default ({ text, postId, likesCount: likesCountInit, commentsCount, updated_at, enableSkeleton = false, author = "" }) => {
-
-    const [likesCount, setLikesCount] = useState(likesCountInit)
+    
+    const [likesCount, setLikesCount] = useState(parseInt(likesCountInit))
+    useEffect(() => {
+        setLikesCount(likesCountInit)
+    }, [likesCountInit]);
 
     const username = useStore((state) => state.username)
     const [liked, setLiked] = useState(false)
@@ -70,7 +73,7 @@ export default ({ text, postId, likesCount: likesCountInit, commentsCount, updat
         </div>
     }</>)
 }
-function BtnCircle({ src, badge = false, badgeCount, activated = false, like, isLoading, ...props }) {
+function BtnCircle({ src, badge = false, badgeCount = 0, activated = false, like, isLoading, ...props }) {
     return (<>
         <button {...props} onClick={like} className={`relative size-10 cursor-pointer rounded-full flex justify-center items-center shadow-lg ring-1
             ${activated ? "bg-stone-300" : "bg-stone-100"} hover:bg-stone-200 ring-stone-200 
