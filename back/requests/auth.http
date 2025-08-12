@@ -1,6 +1,4 @@
-@hostname = hackathon-backend-3688.onrender.com
-@port = 80
-@host = {{hostname}}:{{port}}
+@host = hackathon-backend-3688.onrender.com
 
 
 ### Créer un utilisateur (suivi de l'envoi d'un email avec token)

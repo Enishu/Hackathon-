@@ -1,4 +1,5 @@
 -- CREATE DATABASE IF NOT EXISTS hackaton_boite_idees;
+
 CREATE TABLE
     IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
